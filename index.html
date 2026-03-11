@@ -918,13 +918,18 @@ function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMe
 async function fetchAI(userText){
   isLoading=true; document.getElementById('sendBtn').disabled=true; showTyping();
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
-        system:content[currentLang].systemPrompt,messages:conversationHistory})
+    const messages=[
+      {role:'system',content:content[currentLang].systemPrompt},
+      ...conversationHistory
+    ];
+    const res=await fetch('/.netlify/functions/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'gpt-4o-mini',max_tokens:1000,messages})
     });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status);}
     const data=await res.json(); hideTyping();
-    const raw=data.content?.[0]?.text||(currentLang==='es'?'Ocurrió un error. Intentá de nuevo.':'An error occurred.');
+    const raw=data.choices?.[0]?.message?.content||(currentLang==='es'?'Ocurrió un error. Intentá de nuevo.':'An error occurred.');
     conversationHistory.push({role:'assistant',content:raw});
     if(raw.includes('[MOSTRAR_FORMULARIO]')){
       const clean=raw.replace('[MOSTRAR_FORMULARIO]','').trim();
@@ -934,7 +939,8 @@ async function fetchAI(userText){
       addMessage('bot',fmt(raw));
     }
   }catch(err){
-    hideTyping(); addMessage('bot',currentLang==='es'?'Ups, problema de conexión. Intentá de nuevo.':'Oops, connection issue. Please try again.');
+    hideTyping(); console.error('RomeBot error:',err);
+    addMessage('bot',currentLang==='es'?'⚠️ Ups, problema de conexión. Intentá de nuevo.':'⚠️ Oops, connection issue. Please try again.');
   }
   isLoading=false; document.getElementById('sendBtn').disabled=false; document.getElementById('userInput').focus();
 }
