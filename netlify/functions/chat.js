@@ -10,28 +10,25 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method Not Allowed' }) };
-  }
-
   try {
     const { messages } = JSON.parse(event.body);
 
-    // Separar system prompt del resto
     const systemMsg = messages.find(m => m.role === 'system');
     const chatMessages = messages.filter(m => m.role !== 'system');
 
-    // Convertir al formato de Gemini
     const geminiContents = chatMessages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }));
 
     const body = {
-      system_instruction: systemMsg ? { parts: [{ text: systemMsg.content }] } : undefined,
       contents: geminiContents,
       generationConfig: { maxOutputTokens: 1000 }
     };
+
+    if (systemMsg) {
+      body.system_instruction = { parts: [{ text: systemMsg.content }] };
+    }
 
     const apiKey = process.env.GEMINI_API_KEY;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
@@ -44,22 +41,30 @@ exports.handler = async (event) => {
 
     const data = await response.json();
 
-    // Adaptar respuesta al formato que espera el frontend (igual que OpenAI)
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Error al obtener respuesta.';
-    const adapted = {
-      choices: [{ message: { content: text } }]
-    };
+    // Si Gemini devuelve error, lo mostramos
+    if (data.error) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          choices: [{ message: { content: `Error Gemini: ${data.error.message}` } }]
+        }),
+      };
+    }
+
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                 `Sin respuesta. Data: ${JSON.stringify(data)}`;
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(adapted),
+      body: JSON.stringify({ choices: [{ message: { content: text } }] }),
     };
   } catch (err) {
     return {
-      statusCode: 500,
+      statusCode: 200,
       headers,
-      body: JSON.stringify({ error: { message: err.message } }),
+      body: JSON.stringify({ choices: [{ message: { content: `Error: ${err.message}` } }] }),
     };
   }
 };
