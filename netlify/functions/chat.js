@@ -15,23 +15,45 @@ exports.handler = async (event) => {
   }
 
   try {
-    const body = JSON.parse(event.body);
+    const { messages } = JSON.parse(event.body);
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Separar system prompt del resto
+    const systemMsg = messages.find(m => m.role === 'system');
+    const chatMessages = messages.filter(m => m.role !== 'system');
+
+    // Convertir al formato de Gemini
+    const geminiContents = chatMessages.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    const body = {
+      system_instruction: systemMsg ? { parts: [{ text: systemMsg.content }] } : undefined,
+      contents: geminiContents,
+      generationConfig: { maxOutputTokens: 1000 }
+    };
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
 
     const data = await response.json();
 
+    // Adaptar respuesta al formato que espera el frontend (igual que OpenAI)
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Error al obtener respuesta.';
+    const adapted = {
+      choices: [{ message: { content: text } }]
+    };
+
     return {
-      statusCode: response.status,
+      statusCode: 200,
       headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify(adapted),
     };
   } catch (err) {
     return {
