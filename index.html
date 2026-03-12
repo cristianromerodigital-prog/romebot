@@ -304,7 +304,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.05</span></div>
+      <div class="version-badge"><span>Beta V1.06</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -460,8 +460,10 @@ async function saveLeadToStorage(lead) {
 async function getLeads() {
   const key = sessionStorage.getItem('leads-key') || '';
   try {
-    const res = await fetch(`${WORKER_URL}/leads`, {
-      headers: { 'x-leads-key': key }
+    const res = await fetch(`${WORKER_URL}/leads/list`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key })
     });
     if (res.status === 401) return null; // unauthorized signal
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1067,9 +1069,10 @@ async function clearLeads() {
   if(!confirm(currentLang==='es'?'¿Confirmar borrado de todos los leads?':'Confirm clearing all leads?')) return;
   try {
     const key = sessionStorage.getItem('leads-key') || '';
-    await fetch(`${WORKER_URL}/leads`, {
-      method: 'DELETE',
-      headers: { 'x-leads-key': key }
+    await fetch(`${WORKER_URL}/leads/clear`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key })
     });
   } catch(e) { console.error('Error borrando leads:', e); }
   renderLeads();
@@ -1299,8 +1302,10 @@ async function verifyLeadsKey() {
 
   // Test the key against the worker
   try {
-    const res = await fetch(`${WORKER_URL}/leads`, {
-      headers: { 'x-leads-key': key }
+    const res = await fetch(`${WORKER_URL}/leads/list`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key })
     });
     if (res.status === 401) {
       input.classList.add('error');
