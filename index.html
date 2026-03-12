@@ -254,6 +254,8 @@
 </style>
 </head>
 <body>
+<input type="text" style="opacity:0;position:absolute;top:-9999px;pointer-events:none;" tabindex="-1" aria-hidden="true">
+<input type="text" style="opacity:0;position:absolute;top:-9999px;pointer-events:none;" tabindex="-1" aria-hidden="true">
 
 <!-- ONBOARDING GATE -->
 <div class="gate-overlay" id="gateOverlay">
@@ -264,12 +266,12 @@
 
     <div class="gate-field">
       <label id="gate-label-name">Nombre completo</label>
-      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="name">
+      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="off">
       <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
     </div>
     <div class="gate-field">
       <label id="gate-label-phone">WhatsApp</label>
-      <input type="tel" id="gate-phone" placeholder="+54 9 11 1234-5678" autocomplete="tel">
+      <input type="text" id="gate-phone" inputmode="tel" placeholder="+54 9 11 1234-5678" autocomplete="off">
       <div class="gate-error" id="gate-err-phone">Ingresá un número de al menos 8 dígitos.</div>
     </div>
     <div class="gate-field">
@@ -304,7 +306,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.07</span></div>
+      <div class="version-badge"><span>Beta V1.08</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -407,7 +409,7 @@
       <div class="leads-auth-icon">🔐</div>
       <h3 class="leads-auth-title">Panel de Leads</h3>
       <p class="leads-auth-sub">Ingresá la clave de acceso para ver los contactos captados.</p>
-      <input type="password" class="leads-auth-input" id="leads-key-input" placeholder="••••••••"
+      <input type="text" class="leads-auth-input" inputmode="none" style="-webkit-text-security:disc;" id="leads-key-input" placeholder="••••••••"
         onkeydown="if(event.key==='Enter') verifyLeadsKey()">
       <button class="leads-auth-btn" onclick="verifyLeadsKey()">Acceder</button>
       <div class="leads-auth-error" id="leads-key-error">Clave incorrecta. Intentá de nuevo.</div>
