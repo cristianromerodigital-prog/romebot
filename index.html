@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RomeBot – By Cristian Romero Digital</title>
@@ -264,12 +265,12 @@
 
     <div class="gate-field">
       <label id="gate-label-name">Nombre completo</label>
-      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="name">
+      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="off">
       <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
     </div>
     <div class="gate-field">
       <label id="gate-label-phone">WhatsApp</label>
-      <input type="tel" id="gate-phone" placeholder="+54 9 11 1234-5678" autocomplete="tel">
+      <input type="tel" id="gate-phone" placeholder="+54 9 11 1234-5678" autocomplete="off">
       <div class="gate-error" id="gate-err-phone">Ingresá un número de al menos 8 dígitos.</div>
     </div>
     <div class="gate-field">
@@ -286,7 +287,7 @@
     </div>
     <div class="gate-field">
       <label id="gate-label-date">Fecha estimada del evento</label>
-      <input type="date" id="gate-date">
+      <input type="date" id="gate-date" autocomplete="off">
       <div class="gate-error" id="gate-err-date">Seleccioná una fecha futura.</div>
     </div>
 
@@ -304,7 +305,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.07</span></div>
+      <div class="version-badge"><span>Beta V1.08</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -364,7 +365,7 @@
       <div style="display:flex;gap:10px;margin-bottom:12px;margin-top:8px;flex-wrap:wrap;">
         <div style="flex:1;min-width:120px;">
           <label style="font-size:0.72rem;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:4px;" id="budget-guests-label">Invitados</label>
-          <input type="number" id="budget-guests" min="10" max="1000" value="100" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:0.85rem;color:var(--text);" oninput="calcBudget()">
+          <input type="number" id="budget-guests" autocomplete="off" min="10" max="1000" value="100" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:0.85rem;color:var(--text);" oninput="calcBudget()">
         </div>
         <div style="flex:1;min-width:120px;">
           <label style="font-size:0.72rem;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:4px;" id="budget-level-label">Nivel</label>
@@ -386,7 +387,7 @@
     <div class="bubble-card">
       <h4 id="timeline-title">📅 Timeline del Evento</h4>
       <div style="display:flex;gap:8px;margin:10px 0 14px;flex-wrap:wrap;">
-        <input type="time" id="tl-start" value="17:00" style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 11px;font-family:Outfit,sans-serif;font-size:0.83rem;color:var(--text);" onchange="genTimeline()">
+        <input type="time" id="tl-start" autocomplete="off" value="17:00" style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 11px;font-family:Outfit,sans-serif;font-size:0.83rem;color:var(--text);" onchange="genTimeline()">
         <select id="tl-event" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 11px;font-family:Outfit,sans-serif;font-size:0.83rem;color:var(--text);" onchange="genTimeline()">
           <option value="wedding">💍 Casamiento</option>
           <option value="birthday">🎂 Cumpleaños</option>
@@ -407,7 +408,7 @@
       <div class="leads-auth-icon">🔐</div>
       <h3 class="leads-auth-title">Panel de Leads</h3>
       <p class="leads-auth-sub">Ingresá la clave de acceso para ver los contactos captados.</p>
-      <input type="password" class="leads-auth-input" id="leads-key-input" placeholder="••••••••"
+      <input type="password" class="leads-auth-input" id="leads-key-input" placeholder="••••••••" autocomplete="off"
         onkeydown="if(event.key==='Enter') verifyLeadsKey()">
       <button class="leads-auth-btn" onclick="verifyLeadsKey()">Acceder</button>
       <div class="leads-auth-error" id="leads-key-error">Clave incorrecta. Intentá de nuevo.</div>
