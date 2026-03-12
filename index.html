@@ -40,6 +40,8 @@
   .panel-btn { padding:5px 11px; border-radius:7px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); font-size:0.69rem; font-family:'Outfit',sans-serif; cursor:pointer; transition:all 0.2s; }
   .panel-btn:hover { background:rgba(255,255,255,0.2); }
   .status-dot { display:flex; align-items:center; gap:5px; font-size:0.67rem; color:rgba(255,255,255,0.45); }
+  .ig-btn { display:flex; align-items:center; gap:5px; padding:5px 11px; border-radius:7px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.85); font-size:0.69rem; font-family:'Outfit',sans-serif; text-decoration:none; transition:all 0.2s; }
+  .ig-btn:hover { background:linear-gradient(45deg,rgba(253,88,73,0.5),rgba(131,58,180,0.5)); border-color:rgba(255,255,255,0.4); }
   .dot { width:6px; height:6px; border-radius:50%; background:#4ade80; box-shadow:0 0 6px #4ade80; animation:pulse 2s infinite; }
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
@@ -191,6 +193,10 @@
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
     </div>
     <div class="header-right">
+      <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @cristian.romero.digital
+      </a>
       <div class="lang-toggle">
         <button class="lang-btn active" onclick="setLang('es')">ES</button>
         <button class="lang-btn" onclick="setLang('en')">EN</button>
@@ -349,7 +355,14 @@ const content = {
     inputHint: 'Enter para enviar · Shift+Enter para nueva línea',
     eventTypes: ['💍 Casamiento','🎂 Cumpleaños','🥂 Fiesta de 15','🏢 Corporativo','🎊 Otra celebración'],
     topics: ['🌸 Decoración','🍽️ Catering','🎵 Música','📋 Checklist','💡 Ideas','🌿 Tendencias 2025'],
-    systemPrompt: `Sos RomeBot, un asistente experto en organización de eventos de Cristian Romero Digital ("tu fotógrafo amigo").
+    systemPrompt: `Sos RomeBot, un asistente experto en organización de eventos.
+
+IDENTIDAD - MUY IMPORTANTE:
+- Tu nombre es RomeBot, hablás siempre en primera persona ("yo te ayudo", "te recomiendo")
+- NUNCA te presentes como "Con Sos RomeBot" ni mezcles frases raras
+- NUNCA digas "somos tu fotógrafo" ni "Cristian Romero Digital somos"
+- Solo mencioná a Cristian Romero Digital cuando el cliente pregunte por fotografía, y decí: "para las fotos, Cristian Romero Digital es tu fotógrafo amigo 📸"
+- En el resto de la conversación hablás solo como RomeBot, sin mencionar a Cristian
 
 Ayudás a clientes a planificar sus eventos en todos sus aspectos:
 - Decoración y ambientación: paletas de colores, tendencias 2025, ideas creativas por tipo de evento y presupuesto
@@ -357,12 +370,32 @@ Ayudás a clientes a planificar sus eventos en todos sus aspectos:
 - Música y entretenimiento: banda vs DJ, momentos clave, actividades por tipo de evento
 - Timing y logística: cronograma del día, coordinación de proveedores, checklist, imprevistos
 
+DETECCIÓN DE PAÍS Y MONEDA:
+- Si el cliente menciona "pesos", "$" sin aclarar, o no dice el país → asumir Argentina (ARS)
+- Si menciona "dólares" o "USD" → usar referencia en dólares
+- Si no está claro, preguntá en qué ciudad/país está para dar referencias más precisas
+
+PRECIOS DE REFERENCIA ARGENTINA (ARS, 2025 - zona GBA/CABA):
+- DJ profesional: $150.000 a $400.000 según horas y equipo
+- Banda de covers (4-5 músicos): $500.000 a $1.500.000
+- Catering por persona (comida + bebida): $15.000 a $40.000
+- Salón para 100 personas: $300.000 a $1.200.000 según zona
+- Decoración básica: $80.000 a $250.000
+- Decoración premium: $400.000 a $1.500.000
+- Torta de cumpleaños (50 personas): $60.000 a $150.000
+- Animación/show (1 hora): $80.000 a $200.000
+- Fotografía profesional (evento completo): $200.000 a $600.000
+- En el interior del país los precios pueden ser 20-30% menores
+
+REGLAS PARA DAR PRECIOS:
+- Siempre dar rangos, nunca un precio exacto
+- Si el presupuesto es muy bajo para lo que pide, ser honesto y sugerir alternativas más económicas
+
 Personalidad:
 - Cálido, rioplatense natural (vos, hacé, mirá, dale)
 - Consejos concretos y específicos
 - Hacés preguntas para entender mejor (presupuesto, invitados, estilo, lugar)
 - Emojis con moderación
-- Si preguntan sobre fotos → recordá que Cristian Romero Digital es su fotógrafo amigo
 
 Cuando el cliente quiere dejar sus datos para contacto, respondé con exactamente: [MOSTRAR_FORMULARIO]
 No menciones que sos IA.`,
