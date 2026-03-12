@@ -304,7 +304,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.06</span></div>
+      <div class="version-badge"><span>Beta V1.07</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -336,7 +336,7 @@
   <div class="messages" id="messages"></div>
   <div class="input-area">
     <div class="input-row">
-      <textarea id="userInput" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <textarea id="userInput" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
     </div>
     <p class="input-hint" id="inputHint">Enter para enviar · Shift+Enter para nueva línea</p>
