@@ -77,6 +77,27 @@
     .input-area { padding:8px 12px; }
   }
 
+  /* ONBOARDING GATE */
+  .gate-overlay { position:fixed; inset:0; z-index:1000; background:var(--bg); display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeUp 0.4s ease; }
+  .gate-overlay.hidden { display:none; }
+  .gate-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:28px 24px; max-width:400px; width:100%; box-shadow:0 8px 32px rgba(42,31,20,0.12); }
+  .gate-logo { width:70px; height:70px; border-radius:50%; margin:0 auto 14px; overflow:hidden; border:2px solid var(--border); box-shadow:0 4px 14px rgba(181,101,29,0.16); display:block; }
+  .gate-logo img { width:100%; height:100%; object-fit:cover; }
+  .gate-title { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:600; color:var(--text); text-align:center; margin-bottom:4px; }
+  .gate-sub { font-size:0.8rem; color:var(--text-muted); text-align:center; margin-bottom:20px; line-height:1.6; }
+  .gate-field { margin-bottom:12px; }
+  .gate-field label { display:block; font-size:0.72rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }
+  .gate-field input, .gate-field select { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'Outfit',sans-serif; font-size:0.875rem; color:var(--text); transition:border-color 0.2s, box-shadow 0.2s; }
+  .gate-field input:focus, .gate-field select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(181,101,29,0.08); }
+  .gate-field input::placeholder { color:var(--text-muted); }
+  .gate-field input.error { border-color:var(--danger); }
+  .gate-error { font-size:0.72rem; color:var(--danger); margin-top:4px; display:none; }
+  .gate-error.show { display:block; }
+  .gate-submit { width:100%; padding:12px; border-radius:12px; background:var(--accent); border:none; color:#fff; font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:500; cursor:pointer; transition:all 0.2s; margin-top:6px; box-shadow:0 4px 12px rgba(181,101,29,0.28); }
+  .gate-submit:hover { background:var(--accent2); transform:translateY(-1px); }
+  .gate-submit:active { transform:translateY(0); }
+  .gate-submit:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
   /* TABS */
   .tabs { display:flex; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; z-index:9; position:relative; }
   .tab { flex:1; padding:10px; font-size:0.78rem; font-family:'Outfit',sans-serif; color:var(--text-muted); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:all 0.2s; font-weight:400; }
@@ -211,11 +232,69 @@
   .clear-btn { font-size:0.72rem; padding:5px 12px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; }
   .clear-btn:hover { border-color:var(--danger); color:var(--danger); }
 
+
+  /* LEADS AUTH */
+  .leads-auth { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:30px 20px; }
+  .leads-auth-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px 22px; max-width:320px; width:100%; box-shadow:0 4px 16px rgba(42,31,20,0.08); text-align:center; }
+  .leads-auth-icon { font-size:2rem; margin-bottom:10px; }
+  .leads-auth-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--text); margin-bottom:6px; }
+  .leads-auth-sub { font-size:0.78rem; color:var(--text-muted); margin-bottom:16px; }
+  .leads-auth-input { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'Outfit',sans-serif; font-size:0.875rem; color:var(--text); text-align:center; letter-spacing:0.1em; margin-bottom:10px; transition:border-color 0.2s, box-shadow 0.2s; }
+  .leads-auth-input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(181,101,29,0.08); }
+  .leads-auth-input.error { border-color:var(--danger); animation: shake 0.3s ease; }
+  .leads-auth-btn { width:100%; padding:10px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-family:'Outfit',sans-serif; font-size:0.875rem; font-weight:500; cursor:pointer; transition:all 0.2s; }
+  .leads-auth-btn:hover { background:var(--accent2); }
+  .leads-auth-error { font-size:0.72rem; color:var(--danger); margin-top:6px; display:none; }
+  .leads-auth-error.show { display:block; }
+  .leads-logout { font-size:0.7rem; color:var(--text-muted); background:none; border:none; cursor:pointer; text-decoration:underline; margin-top:8px; }
+  .leads-logout:hover { color:var(--danger); }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
   .messages::-webkit-scrollbar{width:3px;} .messages::-webkit-scrollbar-track{background:transparent;} .messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
   .leads-screen::-webkit-scrollbar{width:3px;} .leads-screen::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
 <body>
+
+<!-- ONBOARDING GATE -->
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-card">
+    <div class="gate-logo"><img id="gateLogo" src="" alt="CRD"></div>
+    <h2 class="gate-title">¡Bienvenido a RomeBot!</h2>
+    <p class="gate-sub" id="gate-sub">Ingresá tus datos para acceder al asistente de planificación de eventos de <strong>Cristian Romero Digital</strong>.</p>
+
+    <div class="gate-field">
+      <label id="gate-label-name">Nombre completo</label>
+      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="name">
+      <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-phone">WhatsApp</label>
+      <input type="tel" id="gate-phone" placeholder="+54 9 11 1234-5678" autocomplete="tel">
+      <div class="gate-error" id="gate-err-phone">Ingresá un número de al menos 8 dígitos.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-event">Tipo de evento</label>
+      <select id="gate-event">
+        <option value="" id="gate-opt-default">— Seleccioná —</option>
+        <option value="💍 Casamiento">💍 Casamiento</option>
+        <option value="🎂 Cumpleaños">🎂 Cumpleaños</option>
+        <option value="🥂 Fiesta de 15">🥂 Fiesta de 15</option>
+        <option value="🏢 Corporativo">🏢 Corporativo</option>
+        <option value="🎊 Otra celebración">🎊 Otra celebración</option>
+      </select>
+      <div class="gate-error" id="gate-err-event">Seleccioná el tipo de evento.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-date">Fecha estimada del evento</label>
+      <input type="date" id="gate-date">
+      <div class="gate-error" id="gate-err-date">Seleccioná una fecha futura.</div>
+    </div>
+
+    <button class="gate-submit" id="gate-submit" onclick="submitGate()">
+      Ingresar al asistente →
+    </button>
+  </div>
+</div>
 
 <header>
   <div class="header-banner" id="headerBanner"></div>
@@ -225,7 +304,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.03</span></div>
+      <div class="version-badge"><span>Beta V1.04</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -322,7 +401,20 @@
 
 <!-- LEADS SCREEN -->
 <div class="screen" id="screen-leads">
-  <div class="leads-screen">
+  <!-- Auth gate -->
+  <div class="leads-auth" id="leads-auth-wall">
+    <div class="leads-auth-card">
+      <div class="leads-auth-icon">🔐</div>
+      <h3 class="leads-auth-title">Panel de Leads</h3>
+      <p class="leads-auth-sub">Ingresá la clave de acceso para ver los contactos captados.</p>
+      <input type="password" class="leads-auth-input" id="leads-key-input" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') verifyLeadsKey()">
+      <button class="leads-auth-btn" onclick="verifyLeadsKey()">Acceder</button>
+      <div class="leads-auth-error" id="leads-key-error">Clave incorrecta. Intentá de nuevo.</div>
+    </div>
+  </div>
+  <!-- Leads content (hidden until auth) -->
+  <div class="leads-screen" id="leads-content" style="display:none;">
     <div class="leads-header">
       <h3 id="leads-title">👥 Leads Captados</h3>
       <div style="display:flex;gap:8px;align-items:center;">
@@ -331,6 +423,8 @@
       </div>
     </div>
     <div id="leads-list"></div>
+    <button class="leads-logout" onclick="logoutLeads()">🔒 Cerrar sesión del panel</button>
+  </div>
   </div>
 </div>
 
@@ -364,8 +458,12 @@ async function saveLeadToStorage(lead) {
 }
 
 async function getLeads() {
+  const key = sessionStorage.getItem('leads-key') || '';
   try {
-    const res = await fetch(`${WORKER_URL}/leads`);
+    const res = await fetch(`${WORKER_URL}/leads`, {
+      headers: { 'x-leads-key': key }
+    });
+    if (res.status === 401) return null; // unauthorized signal
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
   } catch(e) { console.error('Error leyendo leads:', e); return []; }
@@ -920,7 +1018,24 @@ async function submitContact() {
 
 // ── LEADS PANEL ──────────────────────────────────────────
 async function renderLeads() {
+  const authed = sessionStorage.getItem('leads-authed');
+  if (!authed) { showLeadsAuth(); return; }
   const leads = await getLeads();
+  if (leads === null) { sessionStorage.removeItem('leads-authed'); sessionStorage.removeItem('leads-key'); showLeadsAuth(); return; }
+  const ll = content[currentLang].leadsLabels;
+  document.getElementById('leads-title').textContent = ll.title;
+  document.getElementById('leads-count').textContent = ll.count(leads.length);
+  document.getElementById('clear-btn-label').textContent = ll.clear;
+  const list = document.getElementById('leads-list');
+  if(leads.length===0){
+    list.innerHTML=`<div class="no-leads">${ll.noLeads.replace('\n','<br>')}</div>`; return;
+  }
+  document.getElementById('leads-auth-wall').style.display = 'none';
+  document.getElementById('leads-content').style.display = 'block';
+  renderLeadsData(leads);
+}
+
+function renderLeadsData(leads) {
   const ll = content[currentLang].leadsLabels;
   document.getElementById('leads-title').textContent = ll.title;
   document.getElementById('leads-count').textContent = ll.count(leads.length);
@@ -951,7 +1066,11 @@ async function clearLeads() {
   const ll = content[currentLang].leadsLabels;
   if(!confirm(currentLang==='es'?'¿Confirmar borrado de todos los leads?':'Confirm clearing all leads?')) return;
   try {
-    await fetch(`${WORKER_URL}/leads`, { method: 'DELETE' });
+    const key = sessionStorage.getItem('leads-key') || '';
+    await fetch(`${WORKER_URL}/leads`, {
+      method: 'DELETE',
+      headers: { 'x-leads-key': key }
+    });
   } catch(e) { console.error('Error borrando leads:', e); }
   renderLeads();
 }
@@ -1029,11 +1148,193 @@ async function sendMessage(){
   conversationHistory.push({role:'user',content:text}); fetchAI(text);
 }
 
+// ── ONBOARDING GATE ──────────────────────────────────────
+function initGate() {
+  // Set logo
+  document.getElementById('gateLogo').src = logoSrc;
+
+  // Check if already registered
+  const registered = localStorage.getItem('romebot-registered');
+  if (registered) {
+    const data = JSON.parse(registered);
+    document.getElementById('gateOverlay').classList.add('hidden');
+    // Pre-load memory from gate data
+    saveClientMemory({ name: data.name, event: data.event, lang: currentLang });
+    return;
+  }
+  // Show gate, disable body scroll
+  document.body.style.overflow = 'hidden';
+}
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validatePhone(phone) {
+  return phone.replace(/\D/g,'').length >= 8;
+}
+
+async function submitGate() {
+  const name  = document.getElementById('gate-name').value.trim();
+  const phone = document.getElementById('gate-phone').value.trim();
+  const event = document.getElementById('gate-event').value;
+  const date  = document.getElementById('gate-date').value;
+
+  // Reset errors
+  document.querySelectorAll('.gate-error').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.gate-field input, .gate-field select').forEach(i => i.classList.remove('error'));
+
+  let valid = true;
+  if (!name) {
+    document.getElementById('gate-err-name').classList.add('show');
+    document.getElementById('gate-name').classList.add('error');
+    valid = false;
+  }
+  if (!validatePhone(phone)) {
+    document.getElementById('gate-err-phone').classList.add('show');
+    document.getElementById('gate-phone').classList.add('error');
+    valid = false;
+  }
+  if (!event) {
+    document.getElementById('gate-err-event').classList.add('show');
+    document.getElementById('gate-event').classList.add('error');
+    valid = false;
+  }
+  if (date) {
+    const today = new Date(); today.setHours(0,0,0,0);
+    if (new Date(date) < today) {
+      document.getElementById('gate-err-date').classList.add('show');
+      document.getElementById('gate-date').classList.add('error');
+      valid = false;
+    }
+  }
+  if (!valid) return;
+
+  const btn = document.getElementById('gate-submit');
+  btn.disabled = true;
+  btn.textContent = currentLang === 'es' ? 'Guardando...' : 'Saving...';
+
+  // Save lead to Cloudflare KV
+  const lead = { name, phone, event, date, lang: currentLang, ts: new Date().toISOString(), source: 'gate' };
+  await saveLeadToStorage(lead);
+
+  // Save to localStorage so gate doesn't show again
+  localStorage.setItem('romebot-registered', JSON.stringify({ name, phone, event, date }));
+  saveClientMemory({ name, event, lang: currentLang });
+
+  // Hide gate with animation
+  const overlay = document.getElementById('gateOverlay');
+  overlay.style.opacity = '0';
+  overlay.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    // Personalized greeting
+    const greeting = currentLang === 'es'
+      ? `¡Hola **${name}**! 🎉 Ya estás dentro. Vi que estás organizando un **${event}**${date ? ` para el **${date}**` : ''}.
+
+¿Por dónde querés empezar? Puedo ayudarte con decoración, catering, música, presupuesto o el timeline del día.`
+      : `Hi **${name}**! 🎉 You're in! I see you're planning a **${event}**${date ? ` for **${date}**` : ''}.
+
+Where would you like to start? I can help with décor, catering, music, budget or the day timeline.`;
+    // Set event type for checklist/timeline
+    currentEventType = event;
+    const map = {'💍':'wedding','🎂':'birthday','🥂':'quince','🏢':'corporate'};
+    const key = Object.keys(map).find(k=>event.includes(k));
+    if(key) { document.getElementById('tl-event').value = map[key]; genTimeline(); }
+    document.getElementById('welcomeBanner')?.remove();
+    setTimeout(() => addMessage('bot', fmt(greeting)), 200);
+  }, 400);
+}
+
+// Update gate labels on lang change
+function updateGateLabels(lang) {
+  if (lang === 'en') {
+    document.querySelector('.gate-title').textContent = 'Welcome to RomeBot!';
+    document.getElementById('gate-sub').innerHTML = 'Enter your details to access the event planning assistant from <strong>Cristian Romero Digital</strong>.';
+    document.getElementById('gate-label-name').textContent = 'Full name';
+    document.getElementById('gate-name').placeholder = 'Your name';
+    document.getElementById('gate-err-name').textContent = 'Please enter your name.';
+    document.getElementById('gate-label-phone').textContent = 'WhatsApp';
+    document.getElementById('gate-err-phone').textContent = 'Enter at least 8 digits.';
+    document.getElementById('gate-label-event').textContent = 'Event type';
+    document.getElementById('gate-opt-default').textContent = '— Select —';
+    document.getElementById('gate-err-event').textContent = 'Select event type.';
+    document.getElementById('gate-label-date').textContent = 'Estimated event date';
+    document.getElementById('gate-err-date').textContent = 'Select a future date.';
+    document.getElementById('gate-submit').textContent = 'Enter the assistant →';
+  } else {
+    document.querySelector('.gate-title').textContent = '¡Bienvenido a RomeBot!';
+    document.getElementById('gate-sub').innerHTML = 'Ingresá tus datos para acceder al asistente de planificación de eventos de <strong>Cristian Romero Digital</strong>.';
+    document.getElementById('gate-label-name').textContent = 'Nombre completo';
+    document.getElementById('gate-name').placeholder = 'Tu nombre';
+    document.getElementById('gate-err-name').textContent = 'Por favor ingresá tu nombre.';
+    document.getElementById('gate-label-phone').textContent = 'WhatsApp';
+    document.getElementById('gate-err-phone').textContent = 'Ingresá un número de al menos 8 dígitos.';
+    document.getElementById('gate-label-event').textContent = 'Tipo de evento';
+    document.getElementById('gate-opt-default').textContent = '— Seleccioná —';
+    document.getElementById('gate-err-event').textContent = 'Seleccioná el tipo de evento.';
+    document.getElementById('gate-label-date').textContent = 'Fecha estimada del evento';
+    document.getElementById('gate-err-date').textContent = 'Seleccioná una fecha futura.';
+    document.getElementById('gate-submit').textContent = 'Ingresar al asistente →';
+  }
+}
+
+// ── LEADS AUTH ───────────────────────────────────────────
+function showLeadsAuth() {
+  document.getElementById('leads-auth-wall').style.display = 'flex';
+  document.getElementById('leads-content').style.display = 'none';
+  document.getElementById('leads-key-input').value = '';
+  document.getElementById('leads-key-error').classList.remove('show');
+  document.getElementById('leads-key-input').classList.remove('error');
+  setTimeout(() => document.getElementById('leads-key-input').focus(), 100);
+}
+
+async function verifyLeadsKey() {
+  const input = document.getElementById('leads-key-input');
+  const key = input.value.trim();
+  if (!key) return;
+  const btn = document.querySelector('.leads-auth-btn');
+  btn.textContent = '...'; btn.disabled = true;
+
+  // Test the key against the worker
+  try {
+    const res = await fetch(`${WORKER_URL}/leads`, {
+      headers: { 'x-leads-key': key }
+    });
+    if (res.status === 401) {
+      input.classList.add('error');
+      document.getElementById('leads-key-error').classList.add('show');
+      btn.textContent = 'Acceder'; btn.disabled = false;
+      input.value = '';
+      setTimeout(() => { input.classList.remove('error'); }, 600);
+      return;
+    }
+    // Success
+    sessionStorage.setItem('leads-key', key);
+    sessionStorage.setItem('leads-authed', '1');
+    document.getElementById('leads-auth-wall').style.display = 'none';
+    document.getElementById('leads-content').style.display = 'block';
+    const leads = await res.json();
+    renderLeadsData(leads);
+  } catch(e) {
+    console.error(e);
+  }
+  btn.textContent = 'Acceder'; btn.disabled = false;
+}
+
+function logoutLeads() {
+  sessionStorage.removeItem('leads-authed');
+  sessionStorage.removeItem('leads-key');
+  showLeadsAuth();
+}
+
 // ── INIT ─────────────────────────────────────────────────
 renderTopics();
 resetChat('es');
 calcBudget();
 genTimeline();
+initGate();
 </script>
   <div class="ai-disclaimer">
     <span>🤖 RomeBot es un asistente de IA y puede cometer errores. Por favor verificá las respuestas antes de contratar proveedores.</span>
