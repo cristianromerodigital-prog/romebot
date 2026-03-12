@@ -922,7 +922,7 @@ async function fetchAI(userText){
       {role:'system',content:content[currentLang].systemPrompt},
       ...conversationHistory
     ];
-    const res=await fetch('/.netlify/functions/chat',{
+    const res=await fetch('https://romebot.cristian-romero-digital.workers.dev',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'gpt-4o-mini',max_tokens:1000,messages})
