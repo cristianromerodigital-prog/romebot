@@ -225,7 +225,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.02</span></div>
+      <div class="version-badge"><span>Beta V1.03</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -349,33 +349,37 @@ let isLoading = false;
 let conversationHistory = [];
 let currentEventType = null;
 
-// ── STORAGE HELPERS ──────────────────────────────────────
+// ── STORAGE HELPERS (Cloudflare KV vía Worker) ───────────
+const WORKER_URL = 'https://romebot.cristian-romero-digital.workers.dev';
+
 async function saveLeadToStorage(lead) {
   try {
-    const existing = await window.storage.get('romebot-leads').catch(()=>null);
-    const leads = existing ? JSON.parse(existing.value) : [];
-    leads.unshift(lead);
-    await window.storage.set('romebot-leads', JSON.stringify(leads), true);
-  } catch(e) { console.error('Storage error:', e); }
+    const res = await fetch(`${WORKER_URL}/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lead)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+  } catch(e) { console.error('Error guardando lead:', e); }
 }
 
 async function getLeads() {
   try {
-    const r = await window.storage.get('romebot-leads', true);
-    return r ? JSON.parse(r.value) : [];
-  } catch(e) { return []; }
+    const res = await fetch(`${WORKER_URL}/leads`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch(e) { console.error('Error leyendo leads:', e); return []; }
 }
 
+// Memoria de cliente: sigue en localStorage (es por dispositivo, no compartida)
 async function saveClientMemory(data) {
-  try {
-    await window.storage.set('romebot-client', JSON.stringify(data));
-  } catch(e) {}
+  try { localStorage.setItem('romebot-client', JSON.stringify(data)); } catch(e) {}
 }
 
 async function getClientMemory() {
   try {
-    const r = await window.storage.get('romebot-client');
-    return r ? JSON.parse(r.value) : null;
+    const r = localStorage.getItem('romebot-client');
+    return r ? JSON.parse(r) : null;
   } catch(e) { return null; }
 }
 
@@ -946,7 +950,9 @@ async function renderLeads() {
 async function clearLeads() {
   const ll = content[currentLang].leadsLabels;
   if(!confirm(currentLang==='es'?'¿Confirmar borrado de todos los leads?':'Confirm clearing all leads?')) return;
-  try { await window.storage.delete('romebot-leads', true); } catch(e){}
+  try {
+    await fetch(`${WORKER_URL}/leads`, { method: 'DELETE' });
+  } catch(e) { console.error('Error borrando leads:', e); }
   renderLeads();
 }
 
