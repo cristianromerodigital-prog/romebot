@@ -49,17 +49,18 @@
 
   /* MOBILE RESPONSIVE HEADER */
   @media (max-width: 600px) {
-    .header-content { padding:8px 12px; gap:8px; }
-    .logo-wrap { width:36px; height:36px; flex-shrink:0; }
-    .header-info h1 { font-size:0.82rem; }
-    .header-info .slogan { font-size:0.58rem; }
+    .header-content { padding:6px 10px; gap:8px; flex-wrap:nowrap; }
+    .logo-wrap { width:32px; height:32px; flex-shrink:0; }
+    .header-info h1 { font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px; }
+    .header-info .slogan { font-size:0.55rem; white-space:nowrap; }
     .version-badge { display:none; }
-    .ig-btn span { display:none; }
-    .ig-btn { padding:5px 8px; min-width:32px; justify-content:center; }
+    .ig-btn .ig-label { display:none; }
+    .ig-btn { padding:5px 7px; }
     .lang-toggle { gap:2px; padding:2px; }
-    .lang-btn { padding:3px 7px; font-size:0.62rem; }
+    .lang-btn { padding:3px 6px; font-size:0.6rem; }
     .status-dot { display:none; }
-    .panel-btn { padding:4px 8px; font-size:0.62rem; }
+    .panel-btn { padding:4px 7px; font-size:0.6rem; }
+    .header-right { gap:5px; flex-shrink:0; }
   }
 
   /* MOBILE GENERAL */
@@ -227,7 +228,7 @@
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        @cristian.romero.digital
+        <span class="ig-label">@cristian.romero.digital</span>
       </a>
       <div class="lang-toggle">
         <button class="lang-btn active" onclick="setLang('es')">ES</button>
