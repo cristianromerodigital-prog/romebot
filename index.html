@@ -231,6 +231,16 @@
   .no-leads { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:0.85rem; }
   .clear-btn { font-size:0.72rem; padding:5px 12px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; }
   .clear-btn:hover { border-color:var(--danger); color:var(--danger); }
+  .csv-btn { font-size:0.72rem; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:5px 10px; cursor:pointer; color:var(--text); font-family:Outfit,sans-serif; transition:all 0.2s; }
+  .csv-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .leads-pagination { display:flex; gap:6px; justify-content:center; align-items:center; margin-top:14px; padding-bottom:8px; }
+  .page-btn { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:5px 13px; font-size:0.78rem; cursor:pointer; font-family:Outfit,sans-serif; color:var(--text); transition:all 0.2s; }
+  .page-btn:hover, .page-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .page-btn:disabled { opacity:0.35; cursor:default; }
+  .lead-delete-btn { background:none; border:none; cursor:pointer; font-size:0.85rem; opacity:0.4; padding:2px 4px; border-radius:6px; transition:all 0.2s; line-height:1; }
+  .lead-delete-btn:hover { opacity:1; background:rgba(220,53,69,0.1); }
+  .page-info { font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:center; }
+  .lead-source { font-size:0.65rem; color:var(--text-muted); background:var(--surface2); padding:2px 7px; border-radius:6px; margin-left:auto; }
 
 
   /* LEADS AUTH */
@@ -306,7 +316,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.12</span></div>
+      <div class="version-badge"><span>Beta V1.13</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -419,12 +429,17 @@
   <div class="leads-screen" id="leads-content" style="display:none;">
     <div class="leads-header">
       <h3 id="leads-title">👥 Leads Captados</h3>
-      <div style="display:flex;gap:8px;align-items:center;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <span class="leads-count" id="leads-count">0 leads</span>
+        <button class="csv-btn" onclick="exportCSV()" title="Exportar CSV">⬇️ CSV</button>
         <button class="clear-btn" onclick="clearLeads()" id="clear-btn-label">Limpiar</button>
       </div>
     </div>
+    <input type="text" id="leads-search" placeholder="🔍 Buscar nombre, evento o teléfono..." autocomplete="off"
+      oninput="filterLeads(this.value)"
+      style="width:100%;box-sizing:border-box;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:0.85rem;color:var(--text);margin-bottom:12px;">
     <div id="leads-list"></div>
+    <div class="leads-pagination" id="leads-pagination"></div>
     <button class="leads-logout" onclick="logoutLeads()">🔒 Cerrar sesión del panel</button>
   </div>
   </div>
@@ -1032,31 +1047,146 @@ async function renderLeads() {
   renderLeadsData(leads);
 }
 
+let _allLeads = [];
+let _filteredLeads = [];
+let _leadsPage = 1;
+const LEADS_PER_PAGE = 8;
+
 function renderLeadsData(leads) {
+  _allLeads = leads;
+  _filteredLeads = [...leads];
+  _leadsPage = 1;
   const ll = content[currentLang].leadsLabels;
   document.getElementById('leads-title').textContent = ll.title;
   document.getElementById('leads-count').textContent = ll.count(leads.length);
   document.getElementById('clear-btn-label').textContent = ll.clear;
+  const search = document.getElementById('leads-search');
+  if (search) search.value = '';
+  _renderLeadsPage();
+}
+
+function filterLeads(q) {
+  const query = q.toLowerCase().trim();
+  _filteredLeads = query
+    ? _allLeads.filter(l =>
+        (l.name||'').toLowerCase().includes(query) ||
+        (l.event||'').toLowerCase().includes(query) ||
+        (l.phone||'').includes(query))
+    : [..._allLeads];
+  _leadsPage = 1;
+  document.getElementById('leads-count').textContent =
+    _filteredLeads.length + ' lead' + (_filteredLeads.length !== 1 ? 's' : '');
+  _renderLeadsPage();
+}
+
+function _renderLeadsPage() {
   const list = document.getElementById('leads-list');
-  if(leads.length===0){
-    list.innerHTML=`<div class="no-leads">${ll.noLeads.replace('\n','<br>')}</div>`; return;
+  const pagination = document.getElementById('leads-pagination');
+
+  if (_filteredLeads.length === 0) {
+    list.innerHTML = '<div class="no-leads">Sin resultados.</div>';
+    pagination.innerHTML = '';
+    return;
   }
-  list.innerHTML='';
-  leads.forEach(l=>{
-    const card=document.createElement('div'); card.className='lead-card';
-    const d=new Date(l.ts); const dateStr=d.toLocaleDateString(currentLang==='es'?'es-AR':'en-US',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    let waBtn = l.phone ? `<a class="lead-wa" href="https://wa.me/${l.phone.replace(/\D/g,'')}?text=${encodeURIComponent(`¡Hola ${l.name}! Soy Cristian Romero Digital 📸`)}" target="_blank">💬 WhatsApp</a>` : '';
-    card.innerHTML=`
-      <div class="lead-name">${l.name||'—'}</div>
-      <div class="lead-details">
-        ${l.event?`<span class="lead-tag event">${l.event}</span>`:''}
-        ${l.date?`<span class="lead-tag">📅 ${l.date}</span>`:''}
-        ${l.phone?`<span class="lead-tag">📱 ${l.phone}</span>`:''}
+
+  const totalPages = Math.ceil(_filteredLeads.length / LEADS_PER_PAGE);
+  const start = (_leadsPage - 1) * LEADS_PER_PAGE;
+  const pageLeads = _filteredLeads.slice(start, start + LEADS_PER_PAGE);
+
+  list.innerHTML = '';
+  pageLeads.forEach(l => {
+    const card = document.createElement('div');
+    card.className = 'lead-card';
+    const rawDate = l.ts || l.timestamp || '';
+    const d = rawDate ? new Date(rawDate) : null;
+    const dateStr = d && !isNaN(d)
+      ? d.toLocaleDateString(currentLang==='es'?'es-AR':'en-US', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+      : '—';
+    const phone = l.phone ? l.phone.replace(/\D/g,'') : '';
+    const waMsg = encodeURIComponent('¡Hola ' + (l.name||'') + '! Soy Cristian Romero Digital 📸');
+    const waBtn = phone ? `<a class="lead-wa" href="https://wa.me/${phone}?text=${waMsg}" target="_blank">💬 WhatsApp</a>` : '';
+    const source = l.source === 'gate' ? '🚪 Entrada' : l.source === 'chat' ? '💬 Chat' : '';
+    const leadId = l.id || '';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+        <div class="lead-name">${l.name||'—'}</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          ${source ? `<span class="lead-source">${source}</span>` : ''}
+          <button class="lead-delete-btn" onclick="deleteLead('${leadId}')" title="Eliminar lead">🗑</button>
+        </div>
+      </div>
+      <div class="lead-details" style="margin-top:6px;">
+        ${l.event ? `<span class="lead-tag event">${l.event}</span>` : ''}
+        ${l.date ? `<span class="lead-tag">📅 ${l.date}</span>` : ''}
+        ${l.phone ? `<span class="lead-tag">📱 ${l.phone}</span>` : ''}
       </div>
       ${waBtn}
       <div class="lead-date">${dateStr}</div>`;
     list.appendChild(card);
   });
+
+  // Paginación
+  pagination.innerHTML = '';
+  if (totalPages <= 1) return;
+
+  const prev = document.createElement('button');
+  prev.className = 'page-btn'; prev.textContent = '←';
+  prev.disabled = _leadsPage === 1;
+  prev.onclick = () => { _leadsPage--; _renderLeadsPage(); };
+  pagination.appendChild(prev);
+
+  const info = document.createElement('span');
+  info.className = 'page-info';
+  info.textContent = _leadsPage + ' / ' + totalPages;
+  pagination.appendChild(info);
+
+  const next = document.createElement('button');
+  next.className = 'page-btn'; next.textContent = '→';
+  next.disabled = _leadsPage === totalPages;
+  next.onclick = () => { _leadsPage++; _renderLeadsPage(); };
+  pagination.appendChild(next);
+}
+
+function exportCSV() {
+  if (!_allLeads.length) return;
+  const headers = ['Nombre','Teléfono','Evento','Fecha evento','Fuente','Registrado'];
+  const rows = _allLeads.map(l => {
+    const raw = l.ts || l.timestamp || '';
+    const fecha = raw ? new Date(raw).toLocaleString('es-AR') : '';
+    return [l.name||'', l.phone||'', l.event||'', l.date||'', l.source||'', fecha]
+      .map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',');
+  });
+  const csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'leads-romebot-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function deleteLead(id) {
+  if (!id) return;
+  if (!confirm(currentLang==='es' ? '¿Eliminar este lead?' : 'Delete this lead?')) return;
+  const key = sessionStorage.getItem('leads-key') || '';
+  try {
+    const res = await fetch(`${WORKER_URL}/leads/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, id })
+    });
+    if (!res.ok) throw new Error('Error al eliminar');
+    // Eliminar del array local sin recargar
+    _allLeads = _allLeads.filter(l => l.id !== id);
+    _filteredLeads = _filteredLeads.filter(l => l.id !== id);
+    // Ajustar página si quedó vacía
+    const totalPages = Math.ceil(_filteredLeads.length / LEADS_PER_PAGE);
+    if (_leadsPage > totalPages && totalPages > 0) _leadsPage = totalPages;
+    document.getElementById('leads-count').textContent =
+      _allLeads.length + ' lead' + (_allLeads.length !== 1 ? 's' : '');
+    _renderLeadsPage();
+  } catch(e) { alert('Error al eliminar el lead'); }
 }
 
 async function clearLeads() {
