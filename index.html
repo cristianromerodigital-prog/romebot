@@ -204,6 +204,13 @@
   .send-btn:active{transform:scale(0.97);}
   .send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
   .input-hint { font-size:0.64rem; color:var(--text-muted); text-align:center; margin-top:7px; letter-spacing:0.03em; }
+  .summary-bar { display:flex; justify-content:center; margin-top:8px; }
+  .summary-btn { display:inline-flex; align-items:center; gap:6px; background:#25d366; color:#fff; border:none; border-radius:20px; padding:6px 16px; font-size:0.75rem; font-family:Outfit,sans-serif; font-weight:500; cursor:pointer; transition:all 0.2s; box-shadow:0 2px 8px rgba(37,211,102,0.3); }
+  .summary-btn:hover { background:#1da851; transform:translateY(-1px); box-shadow:0 4px 12px rgba(37,211,102,0.4); }
+  .summary-btn:active { transform:scale(0.97); }
+  .summary-bar { gap:8px; }
+  .email-btn { background:#4f46e5 !important; box-shadow:0 2px 8px rgba(79,70,229,0.3) !important; }
+  .email-btn:hover { background:#4338ca !important; box-shadow:0 4px 12px rgba(79,70,229,0.4) !important; }
 
   /* WELCOME */
   .welcome-banner { text-align:center; padding:16px 14px 6px; animation:fadeUp 0.5s ease; }
@@ -239,9 +246,6 @@
   .page-btn:disabled { opacity:0.35; cursor:default; }
   .lead-delete-btn { background:none; border:none; cursor:pointer; font-size:0.85rem; opacity:0.4; padding:2px 4px; border-radius:6px; transition:all 0.2s; line-height:1; }
   .lead-delete-btn:hover { opacity:1; background:rgba(220,53,69,0.1); }
-  .chat-data-box { background:var(--surface2); border-radius:8px; padding:8px 10px; margin:8px 0 6px; font-size:0.75rem; display:flex; flex-direction:column; gap:4px; }
-  .chat-data-row { color:var(--text); line-height:1.4; }
-  .chat-data-label { font-weight:600; color:var(--accent); margin-right:4px; }
   .page-info { font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:center; }
   .lead-source { font-size:0.65rem; color:var(--text-muted); background:var(--surface2); padding:2px 7px; border-radius:6px; margin-left:auto; }
 
@@ -319,7 +323,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.14</span></div>
+      <div class="version-badge"><span>Beta V1.15</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -353,6 +357,30 @@
     <div class="input-row">
       <textarea id="userInput" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="summary-bar">
+      <button class="summary-btn" onclick="sendSummaryWhatsApp()" id="summaryBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.054 23.05a.75.75 0 00.916.917l5.233-1.479A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.51-5.173-1.395l-.372-.219-3.853 1.088 1.089-3.808-.24-.386A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        WhatsApp
+      </button>
+      <button class="summary-btn email-btn" onclick="openEmailModal()" id="emailSummaryBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email
+      </button>
+    </div>
+
+    <!-- Modal email -->
+    <div id="emailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
+      <div style="background:var(--surface);border-radius:16px;padding:28px;width:90%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+        <h3 style="margin:0 0 6px;font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--text);">📧 Enviar resumen por email</h3>
+        <p style="margin:0 0 16px;font-size:0.8rem;color:var(--text-muted);">Te mandamos el resumen a tu correo.</p>
+        <input type="email" id="emailInput" placeholder="tu@email.com" autocomplete="email"
+          style="width:100%;box-sizing:border-box;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:0.9rem;color:var(--text);font-family:Outfit,sans-serif;margin-bottom:12px;">
+        <div style="display:flex;gap:8px;">
+          <button onclick="closeEmailModal()" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:0.85rem;cursor:pointer;font-family:Outfit,sans-serif;color:var(--text);">Cancelar</button>
+          <button onclick="sendSummaryEmail()" id="sendEmailBtn" style="flex:2;background:var(--accent);border:none;border-radius:10px;padding:10px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:Outfit,sans-serif;color:#fff;">Enviar ✉️</button>
+        </div>
+      </div>
     </div>
     <p class="input-hint" id="inputHint">Enter para enviar · Shift+Enter para nueva línea</p>
   </div>
@@ -1022,27 +1050,20 @@ async function submitContact() {
   // Remove form
   document.getElementById('contact-form-wrap')?.remove();
   addMessage('bot', fmt(content[currentLang].contactThanks(name)));
-  // Botones de contacto
-  const wa = document.createElement('div'); wa.className='message bot';
-  const av2=document.createElement('div'); av2.className='msg-avatar bot-av';
-  const img2=document.createElement('img'); img2.src=logoSrc; av2.appendChild(img2);
-  const bub=document.createElement('div'); bub.className='bubble';
-  bub.innerHTML=`<div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">📲 Contactá a Cristian directamente:</div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <a href="https://wa.me/message/LRVUTVWXILTHH1" target="_blank" rel="noopener"
-        style="display:flex;align-items:center;gap:10px;background:#25d366;color:#fff;text-decoration:none;padding:10px 14px;border-radius:12px;font-size:0.85rem;font-weight:500;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.054 23.05a.75.75 0 00.916.917l5.233-1.479A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.51-5.173-1.395l-.372-.219-3.853 1.088 1.089-3.808-.24-.386A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-        WhatsApp
-      </a>
-      <a href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener"
-        style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;text-decoration:none;padding:10px 14px;border-radius:12px;font-size:0.85rem;font-weight:500;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        @cristian.romero.digital
-      </a>
-    </div>`;
-  wa.appendChild(av2); wa.appendChild(bub);
-  document.getElementById('messages').appendChild(wa);
-  document.getElementById('messages').scrollTop=99999;
+  // WhatsApp button
+  if(phone) {
+    const wa = document.createElement('div'); wa.className='message bot';
+    const av2=document.createElement('div'); av2.className='msg-avatar bot-av';
+    const img2=document.createElement('img'); img2.src=logoSrc; av2.appendChild(img2);
+    const bub=document.createElement('div'); bub.className='bubble';
+    const link=document.createElement('a'); link.className='lead-wa';
+    const msg = encodeURIComponent(`¡Hola ${name}! Soy Cristian Romero Digital. Vi tu consulta sobre ${event||'tu evento'} 📸`);
+    link.href=`https://wa.me/${phone.replace(/\D/g,'')}?text=${msg}`; link.target='_blank';
+    link.innerHTML='<span>💬</span> WhatsApp';
+    bub.appendChild(link); wa.appendChild(av2); wa.appendChild(bub);
+    document.getElementById('messages').appendChild(wa);
+    document.getElementById('messages').scrollTop=99999;
+  }
 }
 
 // ── LEADS PANEL ──────────────────────────────────────────
@@ -1117,16 +1138,6 @@ function _renderLeadsPage() {
     const waBtn = phone ? `<a class="lead-wa" href="https://wa.me/${phone}?text=${waMsg}" target="_blank">💬 WhatsApp</a>` : '';
     const source = l.source === 'gate' ? '🚪 Entrada' : l.source === 'chat' ? '💬 Chat' : '';
     const leadId = l.id || '';
-    const cd = l.chatData || {};
-    const chatRows = [
-      cd.resumen       ? `<div class="chat-data-row"><span class="chat-data-label">📝</span>${cd.resumen}</div>` : '',
-      cd.fecha_evento  ? `<div class="chat-data-row"><span class="chat-data-label">📅 Fecha:</span>${cd.fecha_evento}</div>` : '',
-      cd.lugar_salon   ? `<div class="chat-data-row"><span class="chat-data-label">🏛 Salón:</span>${cd.lugar_salon}</div>` : '',
-      cd.zona          ? `<div class="chat-data-row"><span class="chat-data-label">📍 Zona:</span>${cd.zona}</div>` : '',
-      cd.presupuesto   ? `<div class="chat-data-row"><span class="chat-data-label">💰 Presupuesto:</span>${cd.presupuesto}</div>` : '',
-      cd.fotografo     ? `<div class="chat-data-row"><span class="chat-data-label">📸 Fotógrafo:</span>${cd.fotografo}</div>` : '',
-    ].filter(Boolean).join('');
-
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
         <div class="lead-name">${l.name||'—'}</div>
@@ -1140,7 +1151,6 @@ function _renderLeadsPage() {
         ${l.date ? `<span class="lead-tag">📅 ${l.date}</span>` : ''}
         ${l.phone ? `<span class="lead-tag">📱 ${l.phone}</span>` : ''}
       </div>
-      ${chatRows ? `<div class="chat-data-box">${chatRows}</div>` : ''}
       ${waBtn}
       <div class="lead-date">${dateStr}</div>`;
     list.appendChild(card);
@@ -1255,34 +1265,111 @@ function fmt(text){
     .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
 }
 
-async function extractAndSaveChatData() {
+function buildSummaryText() {
+  const reg = JSON.parse(localStorage.getItem('romebot-registered') || localStorage.getItem('romebot-client') || 'null');
+  const cd = JSON.parse(localStorage.getItem('romebot-chatdata') || 'null');
+
+  const lines = [];
+  lines.push('📋 *Resumen de consulta — RomeBot*');
+  lines.push('');
+
+  if (reg?.name)  lines.push(`👤 *Nombre:* ${reg.name}`);
+  if (reg?.phone) lines.push(`📱 *Teléfono:* ${reg.phone}`);
+  if (reg?.event) lines.push(`🎉 *Evento:* ${reg.event}`);
+
+  if (cd) {
+    if (cd.fecha_evento) lines.push(`📅 *Fecha:* ${cd.fecha_evento}`);
+    if (cd.salon)        lines.push(`🏛 *Salón:* ${cd.salon}`);
+    if (cd.localidad)    lines.push(`📍 *Localidad:* ${cd.localidad}`);
+    if (cd.invitados)    lines.push(`👥 *Invitados:* ${cd.invitados}`);
+    if (cd.horario)      lines.push(`🕐 *Horario:* ${cd.horario}`);
+    if (cd.foto_video)   lines.push(`🎬 *Foto/Video:* ${cd.foto_video}`);
+    if (cd.book_fotos)   lines.push(`📖 *Book de fotos:* ${cd.book_fotos}`);
+    if (cd.presupuesto)  lines.push(`💰 *Presupuesto:* ${cd.presupuesto}`);
+    if (cd.resumen) {
+      lines.push('');
+      lines.push(`📝 ${cd.resumen}`);
+    }
+  }
+
+  lines.push('');
+  lines.push('_Enviado desde romebot.pages.dev_');
+  return lines.join('\n');
+}
+
+function openEmailModal() {
+  const modal = document.getElementById('emailModal');
+  modal.style.display = 'flex';
+  // Pre-rellenar si tiene email guardado
+  const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
+  if (reg?.email) document.getElementById('emailInput').value = reg.email;
+  setTimeout(() => document.getElementById('emailInput').focus(), 100);
+}
+function closeEmailModal() {
+  document.getElementById('emailModal').style.display = 'none';
+}
+// Cerrar modal al tocar fuera
+document.addEventListener('click', e => {
+  const modal = document.getElementById('emailModal');
+  if (modal && e.target === modal) closeEmailModal();
+});
+
+async function sendSummaryEmail() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('emailInput').style.borderColor = 'var(--danger)';
+    return;
+  }
+  document.getElementById('emailInput').style.borderColor = '';
+  const btn = document.getElementById('sendEmailBtn');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
+  const summary = buildSummaryText();
+
   try {
-    const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
-    if (!reg || !reg.phone) return;
-    const extractMsgs = [
-      { role: 'system', content: `Analizá esta conversación y extraé SOLO datos mencionados explícitamente. Devolvé ÚNICAMENTE JSON:
-{"fecha_evento":null,"lugar_salon":null,"zona":null,"fotografo":null,"presupuesto":null,"resumen":null}
-No inventes. Si no se mencionó, null. Solo JSON, sin texto extra.` },
-      ...conversationHistory.slice(-10)
-    ];
-    const res = await fetch(WORKER_URL, {
+    const res = await fetch(WORKER_URL + '/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: extractMsgs })
+      body: JSON.stringify({ toEmail: email, toName: reg?.name || '', summary })
     });
     const data = await res.json();
-    const raw = data.choices?.[0]?.message?.content || '';
-    const clean = raw.replace(/```json|```/g,'').trim();
-    const chatData = JSON.parse(clean);
-    // Buscar el lead por teléfono y actualizarlo
-    const listRes = await fetch(`${WORKER_URL}/leads/list`, {
+    if (!data.ok) throw new Error(data.error || 'Error');
+    closeEmailModal();
+    showToast('✅ ¡Email enviado con éxito!');
+  } catch(e) {
+    showToast('⚠️ No se pudo enviar el email. Intentá de nuevo.');
+  }
+  btn.disabled = false; btn.textContent = 'Enviar ✉️';
+}
+
+async function sendSummaryWhatsApp() {
+  const btn = document.getElementById('summaryBtn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const text = buildSummaryText();
+  const reg = JSON.parse(localStorage.getItem('romebot-registered') || localStorage.getItem('romebot-client') || 'null');
+
+  try {
+    // Enviar silenciosamente a Cristian via Worker (el usuario no lo ve)
+    await fetch(WORKER_URL + '/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: '' }) // sin key, solo busca
+      body: JSON.stringify({ message: text })
     });
-    // No tenemos key en el cliente — guardamos localmente para mostrar en sesión
-    localStorage.setItem('romebot-chatdata', JSON.stringify(chatData));
   } catch(e) {}
+
+  // Abrir WhatsApp del usuario con su resumen
+  const userPhone = reg?.phone ? reg.phone.replace(/\D/g,'') : null;
+  if (userPhone) {
+    const urlUser = 'https://wa.me/' + userPhone + '?text=' + encodeURIComponent(text);
+    window.open(urlUser, '_blank');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.054 23.05a.75.75 0 00.916.917l5.233-1.479A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.51-5.173-1.395l-.372-.219-3.853 1.088 1.089-3.808-.24-.386A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> Enviar resumen por WhatsApp`;
+  showToast('✅ ¡Resumen enviado!');
 }
 
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
