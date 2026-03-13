@@ -246,12 +246,9 @@
   .page-btn:disabled { opacity:0.35; cursor:default; }
   .lead-delete-btn { background:none; border:none; cursor:pointer; font-size:0.85rem; opacity:0.4; padding:2px 4px; border-radius:6px; transition:all 0.2s; line-height:1; }
   .lead-delete-btn:hover { opacity:1; background:rgba(220,53,69,0.1); }
-  .cd-box { background:var(--surface2); border-radius:9px; padding:9px 11px; margin:8px 0 6px; display:flex; flex-direction:column; gap:5px; border-left:3px solid var(--accent); }
-  .cd-resumen { font-size:0.75rem; color:var(--text-muted); font-style:italic; padding-bottom:4px; border-bottom:1px solid var(--border); margin-bottom:2px; }
-  .cd-row { display:flex; align-items:baseline; gap:4px; font-size:0.76rem; line-height:1.4; }
-  .cd-icon { flex-shrink:0; }
-  .cd-label { font-weight:600; color:var(--accent); white-space:nowrap; }
-  .cd-val { color:var(--text); }
+  .cd-box { background:var(--surface2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:8px 0 4px; }
+  .cd-title { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px; }
+  .cd-item { font-size:0.76rem; color:var(--text); line-height:1.6; }
   .page-info { font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:center; }
   .lead-source { font-size:0.65rem; color:var(--text-muted); background:var(--surface2); padding:2px 7px; border-radius:6px; margin-left:auto; }
 
@@ -329,7 +326,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.16</span></div>
+      <div class="version-badge"><span>Beta V1.17</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1144,24 +1141,21 @@ function _renderLeadsPage() {
     const waBtn = phone ? `<a class="lead-wa" href="https://wa.me/${phone}?text=${waMsg}" target="_blank">💬 WhatsApp</a>` : '';
     const source = l.source === 'gate' ? '🚪 Entrada' : l.source === 'chat' ? '💬 Chat' : '';
     const leadId = l.id || '';
-    // Construir sección chatData
     const cd = l.chatData || {};
-    const cdFields = [
-      { key: 'fecha_evento', icon: '📅', label: 'Fecha' },
-      { key: 'salon',        icon: '🏛', label: 'Salón' },
-      { key: 'localidad',    icon: '📍', label: 'Localidad' },
-      { key: 'invitados',    icon: '👥', label: 'Invitados' },
-      { key: 'horario',      icon: '🕐', label: 'Horario' },
-      { key: 'foto_video',   icon: '🎬', label: 'Foto/Video' },
-      { key: 'book_fotos',   icon: '📖', label: 'Book' },
-      { key: 'presupuesto',  icon: '💰', label: 'Presupuesto' },
-    ];
-    const cdRows = cdFields
-      .filter(f => cd[f.key])
-      .map(f => `<div class="cd-row"><span class="cd-icon">${f.icon}</span><span class="cd-label">${f.label}:</span><span class="cd-val">${cd[f.key]}</span></div>`)
-      .join('');
-    const cdResumen = cd.resumen ? `<div class="cd-resumen">${cd.resumen}</div>` : '';
-    const cdBox = (cdRows || cdResumen) ? `<div class="cd-box">${cdResumen}${cdRows}</div>` : '';
+    const cdItems = [
+      cd.fecha      ? `📅 <b>Fecha:</b> ${cd.fecha}` : '',
+      cd.salon      ? `🏛 <b>Salón:</b> ${cd.salon}` : '',
+      cd.localidad  ? `📍 <b>Localidad:</b> ${cd.localidad}` : '',
+      cd.invitados  ? `👥 <b>Invitados:</b> ${cd.invitados}` : '',
+      cd.horario    ? `🕐 <b>Horario:</b> ${cd.horario}` : '',
+      cd.foto_video ? `🎬 <b>Foto/Video:</b> ${cd.foto_video}` : '',
+      cd.book_fotos ? `📖 <b>Book:</b> ${cd.book_fotos}` : '',
+      cd.presupuesto? `💰 <b>Presupuesto:</b> ${cd.presupuesto}` : '',
+    ].filter(Boolean);
+
+    const cdHtml = cdItems.length
+      ? `<div class="cd-box"><div class="cd-title">📋 Resumen del chat</div>${cdItems.map(i=>`<div class="cd-item">${i}</div>`).join('')}</div>`
+      : '';
 
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -1176,7 +1170,7 @@ function _renderLeadsPage() {
         ${l.date ? `<span class="lead-tag">📅 ${l.date}</span>` : ''}
         ${l.phone ? `<span class="lead-tag">📱 ${l.phone}</span>` : ''}
       </div>
-      ${cdBox}
+      ${cdHtml}
       ${waBtn}
       <div class="lead-date">${dateStr}</div>`;
     list.appendChild(card);
@@ -1401,45 +1395,14 @@ async function sendSummaryWhatsApp() {
 async function extractAndSaveChatData() {
   try {
     const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
-    if (!reg) return;
-
-    // Llamar al worker con un system prompt de extracción
-    const extractMsgs = [
-      { role: 'system', content: `Analizá esta conversación y extraé SOLO datos mencionados explícitamente por el usuario. Devolvé ÚNICAMENTE un objeto JSON puro (sin markdown, sin texto):
-{"resumen":null,"fecha_evento":null,"salon":null,"localidad":null,"invitados":null,"horario":null,"book_fotos":null,"foto_video":null,"presupuesto":null}
-Solo JSON puro. null si no se mencionó.` },
-      ...conversationHistory.slice(-12)
-    ];
-
-    const res = await fetch(WORKER_URL, {
+    if (!reg || !reg.phone) return;
+    // Enviar historial al worker para que extraiga y guarde los datos
+    fetch(WORKER_URL + '/chat-extract', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: extractMsgs })
-    });
-    const data = await res.json();
-    const raw = data.choices?.[0]?.message?.content || data.content?.[0]?.text || '';
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return;
-    const newCd = JSON.parse(jsonMatch[0]);
-
-    // Merge con datos previos
-    const prev = JSON.parse(localStorage.getItem('romebot-chatdata') || '{}');
-    const merged = {};
-    for (const k of Object.keys(newCd)) {
-      merged[k] = newCd[k] !== null ? newCd[k] : (prev[k] || null);
-    }
-    localStorage.setItem('romebot-chatdata', JSON.stringify(merged));
-
-    // Enviar al worker para actualizar el lead en KV
-    const phone = reg.phone;
-    if (phone) {
-      fetch(WORKER_URL + '/chat-extract', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, chatData: merged })
-      }).catch(() => {});
-    }
-  } catch(e) { console.log('extractAndSaveChatData:', e.message); }
+      body: JSON.stringify({ phone: reg.phone, messages: conversationHistory.slice(-12) })
+    }).catch(() => {});
+  } catch(e) {}
 }
 
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
