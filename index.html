@@ -250,6 +250,7 @@
   .fecha-col { background:var(--surface2); border-radius:8px; padding:7px 10px; border-top:2px solid var(--accent); }
   .fecha-col-label { font-size:0.68rem; font-weight:700; color:var(--accent); margin-bottom:3px; }
   .fecha-col-val { font-size:0.78rem; color:var(--text); font-weight:500; }
+  .lead-nro { font-size:0.65rem; background:var(--accent); color:#fff; border-radius:5px; padding:1px 6px; margin-right:5px; font-weight:700; vertical-align:middle; }
   .cd-box { background:var(--surface2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:8px 0 4px; }
   .cd-title { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px; }
   .cd-item { font-size:0.76rem; color:var(--text); line-height:1.6; }
@@ -330,7 +331,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.19</span></div>
+      <div class="version-badge"><span>Beta V1.20</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1147,7 +1148,10 @@ function _renderLeadsPage() {
     const leadId = l.id || '';
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-        <div class="lead-name">${l.name||'—'}</div>
+        <div class="lead-name">
+            ${l.nro ? `<span class="lead-nro">#${l.nro}</span>` : ''}
+            ${l.name||'—'}
+          </div>
         <div style="display:flex;gap:6px;align-items:center;">
           ${source ? `<span class="lead-source">${source}</span>` : ''}
           <button class="lead-delete-btn" onclick="deleteLead('${leadId}')" title="Eliminar lead">🗑</button>
