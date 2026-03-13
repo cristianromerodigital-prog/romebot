@@ -246,6 +246,12 @@
   .page-btn:disabled { opacity:0.35; cursor:default; }
   .lead-delete-btn { background:none; border:none; cursor:pointer; font-size:0.85rem; opacity:0.4; padding:2px 4px; border-radius:6px; transition:all 0.2s; line-height:1; }
   .lead-delete-btn:hover { opacity:1; background:rgba(220,53,69,0.1); }
+  .cd-box { background:var(--surface2); border-radius:9px; padding:9px 11px; margin:8px 0 6px; display:flex; flex-direction:column; gap:5px; border-left:3px solid var(--accent); }
+  .cd-resumen { font-size:0.75rem; color:var(--text-muted); font-style:italic; padding-bottom:4px; border-bottom:1px solid var(--border); margin-bottom:2px; }
+  .cd-row { display:flex; align-items:baseline; gap:4px; font-size:0.76rem; line-height:1.4; }
+  .cd-icon { flex-shrink:0; }
+  .cd-label { font-weight:600; color:var(--accent); white-space:nowrap; }
+  .cd-val { color:var(--text); }
   .page-info { font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:center; }
   .lead-source { font-size:0.65rem; color:var(--text-muted); background:var(--surface2); padding:2px 7px; border-radius:6px; margin-left:auto; }
 
@@ -1138,6 +1144,25 @@ function _renderLeadsPage() {
     const waBtn = phone ? `<a class="lead-wa" href="https://wa.me/${phone}?text=${waMsg}" target="_blank">💬 WhatsApp</a>` : '';
     const source = l.source === 'gate' ? '🚪 Entrada' : l.source === 'chat' ? '💬 Chat' : '';
     const leadId = l.id || '';
+    // Construir sección chatData
+    const cd = l.chatData || {};
+    const cdFields = [
+      { key: 'fecha_evento', icon: '📅', label: 'Fecha' },
+      { key: 'salon',        icon: '🏛', label: 'Salón' },
+      { key: 'localidad',    icon: '📍', label: 'Localidad' },
+      { key: 'invitados',    icon: '👥', label: 'Invitados' },
+      { key: 'horario',      icon: '🕐', label: 'Horario' },
+      { key: 'foto_video',   icon: '🎬', label: 'Foto/Video' },
+      { key: 'book_fotos',   icon: '📖', label: 'Book' },
+      { key: 'presupuesto',  icon: '💰', label: 'Presupuesto' },
+    ];
+    const cdRows = cdFields
+      .filter(f => cd[f.key])
+      .map(f => `<div class="cd-row"><span class="cd-icon">${f.icon}</span><span class="cd-label">${f.label}:</span><span class="cd-val">${cd[f.key]}</span></div>`)
+      .join('');
+    const cdResumen = cd.resumen ? `<div class="cd-resumen">${cd.resumen}</div>` : '';
+    const cdBox = (cdRows || cdResumen) ? `<div class="cd-box">${cdResumen}${cdRows}</div>` : '';
+
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
         <div class="lead-name">${l.name||'—'}</div>
@@ -1151,6 +1176,7 @@ function _renderLeadsPage() {
         ${l.date ? `<span class="lead-tag">📅 ${l.date}</span>` : ''}
         ${l.phone ? `<span class="lead-tag">📱 ${l.phone}</span>` : ''}
       </div>
+      ${cdBox}
       ${waBtn}
       <div class="lead-date">${dateStr}</div>`;
     list.appendChild(card);
