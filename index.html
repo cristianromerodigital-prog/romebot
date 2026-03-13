@@ -250,6 +250,9 @@
   .fecha-col { background:var(--surface2); border-radius:8px; padding:7px 10px; border-top:2px solid var(--accent); }
   .fecha-col-label { font-size:0.68rem; font-weight:700; color:var(--accent); margin-bottom:3px; }
   .fecha-col-val { font-size:0.78rem; color:var(--text); font-weight:500; }
+  .cd-box { background:var(--surface2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:8px 0 4px; }
+  .cd-title { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px; }
+  .cd-item { font-size:0.76rem; color:var(--text); line-height:1.6; }
   .page-info { font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:center; }
   .lead-source { font-size:0.65rem; color:var(--text-muted); background:var(--surface2); padding:2px 7px; border-radius:6px; margin-left:auto; }
 
@@ -327,7 +330,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.18</span></div>
+      <div class="version-badge"><span>Beta V1.19</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1398,6 +1401,21 @@ async function extractAndSaveChatData() {
   } catch(e) {}
 }
 
+function detectAndSaveFecha() {
+  try {
+    const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
+    if (!reg || !reg.phone) return;
+    fetch(WORKER_URL + '/update-fechas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phone: reg.phone,
+        messages: conversationHistory.slice(-6)
+      })
+    }).catch(() => {});
+  } catch(e) {}
+}
+
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 
@@ -1418,9 +1436,7 @@ async function fetchAI(userText){
     const data=await res.json(); hideTyping();
     const raw=data.choices?.[0]?.message?.content||(currentLang==='es'?'Ocurrió un error. Intentá de nuevo.':'An error occurred.');
     conversationHistory.push({role:'assistant',content:raw});
-    // Extraer y guardar datos del chat en el lead
-    const _uc = conversationHistory.filter(m => m.role === 'user').length;
-    if (_uc > 0 && _uc % 3 === 0) { extractAndSaveChatData(); }
+    detectAndSaveFecha();
     if(raw.includes('[MOSTRAR_FORMULARIO]')){
       const clean=raw.replace('[MOSTRAR_FORMULARIO]','').trim();
       if(clean) addMessage('bot',fmt(clean));
