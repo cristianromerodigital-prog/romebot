@@ -250,6 +250,11 @@
   .fecha-col { background:var(--surface2); border-radius:8px; padding:7px 10px; border-top:2px solid var(--accent); }
   .fecha-col-label { font-size:0.68rem; font-weight:700; color:var(--accent); margin-bottom:3px; }
   .fecha-col-val { font-size:0.78rem; color:var(--text); font-weight:500; }
+  .chat-log-box { background:var(--surface2); border-radius:8px; padding:8px 10px; margin-top:8px; }
+  .chat-log-title { font-size:0.68rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:5px; }
+  .chat-log-entry { font-size:0.74rem; color:var(--text); padding:3px 0; border-bottom:1px solid var(--border); line-height:1.4; }
+  .chat-log-entry:last-child { border-bottom:none; }
+  .chat-log-more { font-size:0.68rem; color:var(--text-muted); margin-top:4px; text-align:center; }
   .lead-nro { font-size:0.65rem; background:var(--accent); color:#fff; border-radius:5px; padding:1px 6px; margin-right:5px; font-weight:700; vertical-align:middle; }
   .cd-box { background:var(--surface2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:8px 0 4px; }
   .cd-title { font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px; }
@@ -331,7 +336,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.20</span></div>
+      <div class="version-badge"><span>Beta V1.21</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1172,6 +1177,12 @@ function _renderLeadsPage() {
         </div>
       </div>
       ${waBtn}
+      ${l.chat_log && l.chat_log.length ? `
+        <div class="chat-log-box">
+          <div class="chat-log-title">💬 Log de conversación</div>
+          <div class="chat-log-entries">${l.chat_log.slice(-5).map(e => `<div class="chat-log-entry">${e}</div>`).join('')}</div>
+          ${l.chat_log.length > 5 ? `<div class="chat-log-more">+${l.chat_log.length - 5} mensajes anteriores</div>` : ''}
+        </div>` : ''}
       <div class="lead-date">${dateStr}</div>`;
     list.appendChild(card);
   });
@@ -1409,12 +1420,15 @@ function detectAndSaveFecha() {
   try {
     const reg = JSON.parse(localStorage.getItem('romebot-registered') || 'null');
     if (!reg || !reg.phone) return;
+    const userMsgs = conversationHistory.filter(m => m.role === 'user');
+    const lastMessage = userMsgs[userMsgs.length - 1]?.content || '';
     fetch(WORKER_URL + '/update-fechas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phone: reg.phone,
-        messages: conversationHistory.slice(-6)
+        messages: conversationHistory.slice(-6),
+        lastMessage
       })
     }).catch(() => {});
   } catch(e) {}
