@@ -382,10 +382,10 @@
     <div class="header-info">
       <h1>FestiBot</h1>
       <div class="slogan" id="header-slogan">Asesor IA de Eventos</div>
-      <div class="version-badge"><span>Beta V1.32</span></div>
+      <div class="version-badge"><span>Beta V1.33</span></div>
     </div>
     <div class="header-right">
-      <a class="ig-btn" href="https://www.instagram.com/festi.bot//" target="_blank" rel="noopener">
+      <a class="ig-btn" href="https://www.instagram.com/festi.bot/" target="_blank" rel="noopener">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         <span class="ig-label">@festi.bot</span>
       </a>
@@ -522,6 +522,8 @@
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <span class="leads-count" id="leads-count">0 leads</span>
         <button class="csv-btn" onclick="exportCSV()" title="Exportar CSV">⬇️ CSV</button>
+        <button class="csv-btn" onclick="refreshLeads()" id="btn-refresh-leads">🔄 Actualizar</button>
+        <button class="csv-btn" onclick="switchTab('chat')">💬 Chat</button>
         <button class="clear-btn" onclick="clearLeads()" id="clear-btn-label">Limpiar</button>
       </div>
     </div>
@@ -530,11 +532,7 @@
       style="width:100%;box-sizing:border-box;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:0.85rem;color:var(--text);margin-bottom:12px;">
     <div id="leads-list"></div>
     <div class="leads-pagination" id="leads-pagination"></div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
-      <button class="leads-logout" onclick="refreshLeads()" style="color:var(--accent);border-color:var(--accent);">🔄 Actualizar</button>
-      <button class="leads-logout" onclick="switchTab('chat')" style="color:#4f46e5;border-color:#4f46e5;">💬 Ir al Chat</button>
-      <button class="leads-logout" onclick="logoutLeads()" style="margin-left:auto;">🔒 Cerrar sesión</button>
-    </div>
+    <button class="leads-logout" onclick="logoutLeads()">🔒 Cerrar sesión del panel</button>
   </div>
   </div>
 </div>
@@ -1960,8 +1958,8 @@ function logoutLeads() {
 }
 
 async function refreshLeads() {
-  const btn = document.querySelector('[onclick="refreshLeads()"]');
-  if (btn) { btn.textContent = '⏳ Actualizando...'; btn.disabled = true; }
+  const btn = document.getElementById('btn-refresh-leads');
+  if (btn) { btn.textContent = '⏳...'; btn.disabled = true; }
   await renderLeads();
   if (btn) { btn.textContent = '🔄 Actualizar'; btn.disabled = false; }
 }
