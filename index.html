@@ -370,7 +370,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.26</span></div>
+      <div class="version-badge"><span>Beta V1.27</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1556,9 +1556,7 @@ async function loadUserContext(phone) {
 
 function buildContextPrompt(ctx) {
   if (!ctx) return '';
-  const lines = ['
-
-═══ MEMORIA DEL CLIENTE (sesión anterior) ═══'];
+  const lines = [`\n\n═══ MEMORIA DEL CLIENTE (sesión anterior) ═══`];
   if (ctx.name) lines.push(`- Nombre: ${ctx.name}`);
   if (ctx.event) lines.push(`- Tipo de evento: ${ctx.event}`);
   if (ctx.date) lines.push(`- Fecha del evento: ${ctx.date}`);
