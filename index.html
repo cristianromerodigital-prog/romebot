@@ -382,12 +382,12 @@
     <div class="header-info">
       <h1>FestiBot</h1>
       <div class="slogan" id="header-slogan">Asesor IA de Eventos</div>
-      <div class="version-badge"><span>Beta V1.07</span></div>
+      <div class="version-badge"><span>Beta V1.32</span></div>
     </div>
     <div class="header-right">
-      <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
+      <a class="ig-btn" href="https://www.instagram.com/festi.bot//" target="_blank" rel="noopener">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        <span class="ig-label">@festibot</span>
+        <span class="ig-label">@festi.bot</span>
       </a>
       <div class="lang-toggle">
         <button class="lang-btn active" onclick="setLang('es')">ES</button>
@@ -530,7 +530,11 @@
       style="width:100%;box-sizing:border-box;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:0.85rem;color:var(--text);margin-bottom:12px;">
     <div id="leads-list"></div>
     <div class="leads-pagination" id="leads-pagination"></div>
-    <button class="leads-logout" onclick="logoutLeads()">🔒 Cerrar sesión del panel</button>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+      <button class="leads-logout" onclick="refreshLeads()" style="color:var(--accent);border-color:var(--accent);">🔄 Actualizar</button>
+      <button class="leads-logout" onclick="switchTab('chat')" style="color:#4f46e5;border-color:#4f46e5;">💬 Ir al Chat</button>
+      <button class="leads-logout" onclick="logoutLeads()" style="margin-left:auto;">🔒 Cerrar sesión</button>
+    </div>
   </div>
   </div>
 </div>
@@ -1953,6 +1957,13 @@ function logoutLeads() {
   sessionStorage.removeItem('leads-authed');
   sessionStorage.removeItem('leads-key');
   showLeadsAuth();
+}
+
+async function refreshLeads() {
+  const btn = document.querySelector('[onclick="refreshLeads()"]');
+  if (btn) { btn.textContent = '⏳ Actualizando...'; btn.disabled = true; }
+  await renderLeads();
+  if (btn) { btn.textContent = '🔄 Actualizar'; btn.disabled = false; }
 }
 
 // ── INIT ─────────────────────────────────────────────────
