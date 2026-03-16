@@ -370,7 +370,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.27</span></div>
+      <div class="version-badge"><span>Beta V1.28</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1535,41 +1535,35 @@ function validatePhone(phone) {
   return phone.replace(/\D/g,'').length >= 8;
 }
 
-// ── CARGAR CONTEXTO PREVIO DEL USUARIO ───────────────────────
-let _userContext = null;
+// CARGAR CONTEXTO PREVIO DEL USUARIO
+var _userContext = null;
 
 async function loadUserContext(phone) {
   if (!phone) return null;
   try {
-    const res = await fetch('https://romebot.cristian-romero-digital.workers.dev/context', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    });
-    const data = await res.json();
+    var wurl = 'https://romebot.cristian-romero-digital.workers.dev/context';
+    var res = await fetch(wurl, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({phone: phone}) });
+    var data = await res.json();
     _userContext = data.context || null;
     return _userContext;
-  } catch(e) {
-    return null;
-  }
+  } catch(e) { return null; }
 }
 
 function buildContextPrompt(ctx) {
   if (!ctx) return '';
-  const lines = [`\n\n═══ MEMORIA DEL CLIENTE (sesión anterior) ═══`];
-  if (ctx.name) lines.push(`- Nombre: ${ctx.name}`);
-  if (ctx.event) lines.push(`- Tipo de evento: ${ctx.event}`);
-  if (ctx.date) lines.push(`- Fecha del evento: ${ctx.date}`);
+  var out = '\n\n=== MEMORIA DEL CLIENTE ===';
+  if (ctx.name) out += '\n- Nombre: ' + ctx.name;
+  if (ctx.event) out += '\n- Tipo de evento: ' + ctx.event;
+  if (ctx.date) out += '\n- Fecha del evento: ' + ctx.date;
   if (ctx.chat_log && ctx.chat_log.length > 0) {
-    lines.push('- Últimas consultas del cliente:');
-    ctx.chat_log.slice(-8).forEach(entry => {
-      const sin = entry.replace(/^\[[\d\/\s:\.amp\-]+\]\s*/i, '');
-      if (sin.trim()) lines.push(`  · ${sin}`);
+    out += '\n- Ultimas consultas:';
+    ctx.chat_log.slice(-8).forEach(function(e) {
+      var s = e.replace(/^\[.*?\]\s*/, '');
+      if (s.trim()) out += '\n  - ' + s;
     });
   }
-  lines.push('Usá esta info para personalizar la conversación. Si el cliente retoma el tema, referenciá lo que ya sabe. No repitas todo el contexto de golpe — usalo naturalmente.');
-  return lines.join('
-');
+  out += '\nUsa esta info naturalmente, sin repetir todo el contexto de golpe.';
+  return out;
 }
 
 // ── GATE PASO 1: verificar teléfono ──────────────────────────
