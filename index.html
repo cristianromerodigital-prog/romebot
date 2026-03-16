@@ -294,71 +294,37 @@
     <h2 class="gate-title">¡Bienvenido a RomeBot!</h2>
     <p class="gate-sub" id="gate-sub">Ingresá tus datos para acceder al asistente de planificación de eventos de <strong>Cristian Romero Digital</strong>.</p>
 
-    <!-- PASO 1: Nombre + Teléfono -->
-    <div id="gate-step-1">
-      <div class="gate-field">
-        <label id="gate-label-name">Nombre completo</label>
-        <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="off">
-        <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
-      </div>
-      <div class="gate-field">
-        <label id="gate-label-phone">WhatsApp (con código de país)</label>
-        <input type="text" id="gate-phone" inputmode="tel" placeholder="+54 9 11 1234-5678" autocomplete="off">
-        <div class="gate-error" id="gate-err-phone">Ingresá un número válido con código de país (ej: +54911...).</div>
-      </div>
-      <button class="gate-submit" id="gate-btn-verify" onclick="gateStep1()">
-        Verificar por WhatsApp 📲
-      </button>
+    <div class="gate-field">
+      <label id="gate-label-name">Nombre completo</label>
+      <input type="text" id="gate-name" placeholder="Tu nombre" autocomplete="off">
+      <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-phone">WhatsApp</label>
+      <input type="text" id="gate-phone" inputmode="tel" placeholder="+54 9 11 1234-5678" autocomplete="off">
+      <div class="gate-error" id="gate-err-phone">Ingresá un número de al menos 8 dígitos.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-event">Tipo de evento</label>
+      <select id="gate-event">
+        <option value="" id="gate-opt-default">— Seleccioná —</option>
+        <option value="💍 Casamiento">💍 Casamiento</option>
+        <option value="🎂 Cumpleaños">🎂 Cumpleaños</option>
+        <option value="🥂 Fiesta de 15">🥂 Fiesta de 15</option>
+        <option value="🏢 Corporativo">🏢 Corporativo</option>
+        <option value="🎊 Otra celebración">🎊 Otra celebración</option>
+      </select>
+      <div class="gate-error" id="gate-err-event">Seleccioná el tipo de evento.</div>
+    </div>
+    <div class="gate-field">
+      <label id="gate-label-date">Fecha estimada del evento</label>
+      <input type="date" id="gate-date">
+      <div class="gate-error" id="gate-err-date">Seleccioná una fecha futura.</div>
     </div>
 
-    <!-- PASO 2: Código de verificación -->
-    <div id="gate-step-2" style="display:none;">
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:2rem;margin-bottom:8px;">📱</div>
-        <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.5;">Te enviamos un código de 6 dígitos por WhatsApp al número <strong id="gate-phone-display"></strong></p>
-      </div>
-      <div class="gate-field">
-        <label>Código de verificación</label>
-        <input type="text" id="gate-code" inputmode="numeric" placeholder="123456" maxlength="6" autocomplete="one-time-code"
-          style="text-align:center;font-size:1.4rem;letter-spacing:0.3em;font-weight:600;">
-        <div class="gate-error" id="gate-err-code">Código incorrecto. Intentá de nuevo.</div>
-      </div>
-      <button class="gate-submit" id="gate-btn-code" onclick="gateStep2()">
-        Confirmar código ✓
-      </button>
-      <p style="text-align:center;margin-top:10px;font-size:0.75rem;color:var(--text-muted);">
-        ¿No llegó? <a href="#" onclick="gateResend(event)" style="color:var(--accent);text-decoration:none;">Reenviar código</a>
-        · <a href="#" onclick="gateBack(event)" style="color:var(--text-muted);text-decoration:none;">Cambiar número</a>
-      </p>
-    </div>
-
-    <!-- PASO 3: Evento + Fecha -->
-    <div id="gate-step-3" style="display:none;">
-      <div style="text-align:center;margin-bottom:14px;">
-        <div style="font-size:1.5rem;margin-bottom:4px;">✅</div>
-        <p style="font-size:0.82rem;color:var(--text-muted);">Número verificado. ¡Ya casi estás!</p>
-      </div>
-      <div class="gate-field">
-        <label id="gate-label-event">Tipo de evento</label>
-        <select id="gate-event">
-          <option value="" id="gate-opt-default">— Seleccioná —</option>
-          <option value="💍 Casamiento">💍 Casamiento</option>
-          <option value="🎂 Cumpleaños">🎂 Cumpleaños</option>
-          <option value="🥂 Fiesta de 15">🥂 Fiesta de 15</option>
-          <option value="🏢 Corporativo">🏢 Corporativo</option>
-          <option value="🎊 Otra celebración">🎊 Otra celebración</option>
-        </select>
-        <div class="gate-error" id="gate-err-event">Seleccioná el tipo de evento.</div>
-      </div>
-      <div class="gate-field">
-        <label id="gate-label-date">Fecha estimada del evento</label>
-        <input type="date" id="gate-date">
-        <div class="gate-error" id="gate-err-date">Seleccioná una fecha futura.</div>
-      </div>
-      <button class="gate-submit" id="gate-submit" onclick="submitGate()">
-        Ingresar al asistente →
-      </button>
-    </div>
+    <button class="gate-submit" id="gate-submit" onclick="submitGate()">
+      Ingresar al asistente →
+    </button>
   </div>
 </div>
 
@@ -370,7 +336,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.22</span></div>
+      <div class="version-badge"><span>Beta V1.23</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1114,6 +1080,38 @@ async function submitContact() {
 }
 
 // ── LEADS PANEL ──────────────────────────────────────────
+// Obtener la fecha más relevante del lead: primero del chat log, luego campos, luego gate
+function getLeadFecha(l) {
+  // 1. Buscar última fecha mencionada en el chat log
+  if (l.chat_log && l.chat_log.length > 0) {
+    const meses = 'enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre';
+    const reTexto = new RegExp('(\\d{1,2}\\s+de\\s+(?:' + meses + ')(?:\\s+(?:de\\s+)?\\d{4})?)', 'i');
+    const reNum = /\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/;
+    const reMesAno = new RegExp('(?:' + meses + ')\\s+(?:del?\\s+)?\\d{4}', 'i');
+    // Recorrer de más nuevo a más viejo
+    for (let i = l.chat_log.length - 1; i >= 0; i--) {
+      const entry = l.chat_log[i];
+      const m = entry.match(reTexto) || entry.match(reMesAno) || entry.match(reNum);
+      if (m) return m[0];
+    }
+  }
+  // 2. Usar campos del worker
+  if (l.fecha_evento && l.fecha_evento !== 'null') return l.fecha_evento;
+  if (l.fecha_cumple && l.fecha_cumple !== 'null') return l.fecha_cumple;
+  if (l.chatData?.fecha && l.chatData.fecha !== 'null') return l.chatData.fecha;
+  // 3. Usar fecha del gate
+  if (l.date) {
+    try {
+      const d = new Date(l.date + 'T00:00:00');
+      if (!isNaN(d)) {
+        const mesesArr = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+        return d.getUTCDate() + ' de ' + mesesArr[d.getUTCMonth()] + ' de ' + d.getUTCFullYear();
+      }
+    } catch(e) {}
+  }
+  return '—';
+}
+
 async function renderLeads() {
   const authed = sessionStorage.getItem('leads-authed');
   if (!authed) { showLeadsAuth(); return; }
@@ -1201,13 +1199,9 @@ function _renderLeadsPage() {
         ${l.phone ? `<span class="lead-tag">📱 ${l.phone}</span>` : ''}
       </div>
       <div class="fechas-grid">
-        <div class="fecha-col">
-          <div class="fecha-col-label">🎂 Fecha cumple</div>
-          <div class="fecha-col-val">${l.fecha_cumple || '—'}</div>
-        </div>
-        <div class="fecha-col">
-          <div class="fecha-col-label">🎉 Fecha evento</div>
-          <div class="fecha-col-val">${l.fecha_evento || '—'}</div>
+        <div class="fecha-col" style="grid-column:1/-1;">
+          <div class="fecha-col-label">📅 Fecha del evento</div>
+          <div class="fecha-col-val">${getLeadFecha(l)}</div>
         </div>
       </div>
       ${waBtn}
@@ -1537,130 +1531,6 @@ function validatePhone(phone) {
   return phone.replace(/\D/g,'').length >= 8;
 }
 
-// ── GATE PASO 1: verificar teléfono ──────────────────────────
-async function gateStep1() {
-  const name  = document.getElementById('gate-name').value.trim();
-  const phone = document.getElementById('gate-phone').value.trim();
-  document.querySelectorAll('.gate-error').forEach(e => e.classList.remove('show'));
-  document.querySelectorAll('.gate-field input').forEach(i => i.classList.remove('error'));
-
-  let valid = true;
-  if (!name) {
-    document.getElementById('gate-err-name').classList.add('show');
-    document.getElementById('gate-name').classList.add('error');
-    valid = false;
-  }
-  if (!validatePhone(phone)) {
-    document.getElementById('gate-err-phone').classList.add('show');
-    document.getElementById('gate-phone').classList.add('error');
-    valid = false;
-  }
-  if (!valid) return;
-
-  const btn = document.getElementById('gate-btn-verify');
-  btn.disabled = true;
-  btn.textContent = 'Enviando código...';
-
-  try {
-    const res = await fetch('https://romebot.cristian-romero-digital.workers.dev/verify/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.ok) {
-      document.getElementById('gate-err-phone').textContent = data.error || 'No se pudo enviar el código. Verificá el número.';
-      document.getElementById('gate-err-phone').classList.add('show');
-      document.getElementById('gate-phone').classList.add('error');
-      btn.disabled = false;
-      btn.textContent = 'Verificar por WhatsApp 📲';
-      return;
-    }
-    // Mostrar paso 2
-    document.getElementById('gate-step-1').style.display = 'none';
-    document.getElementById('gate-step-2').style.display = 'block';
-    document.getElementById('gate-phone-display').textContent = phone;
-    document.getElementById('gate-code').focus();
-  } catch(e) {
-    document.getElementById('gate-err-phone').textContent = 'Error de conexión. Intentá de nuevo.';
-    document.getElementById('gate-err-phone').classList.add('show');
-    btn.disabled = false;
-    btn.textContent = 'Verificar por WhatsApp 📲';
-  }
-}
-
-// ── GATE PASO 2: validar código ───────────────────────────────
-async function gateStep2() {
-  const code = document.getElementById('gate-code').value.trim();
-  const phone = document.getElementById('gate-phone').value.trim();
-  document.getElementById('gate-err-code').classList.remove('show');
-
-  if (code.length < 6) {
-    document.getElementById('gate-err-code').textContent = 'Ingresá el código de 6 dígitos.';
-    document.getElementById('gate-err-code').classList.add('show');
-    return;
-  }
-
-  const btn = document.getElementById('gate-btn-code');
-  btn.disabled = true;
-  btn.textContent = 'Verificando...';
-
-  try {
-    const res = await fetch('https://romebot.cristian-romero-digital.workers.dev/verify/check', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, code })
-    });
-    const data = await res.json();
-    if (!data.ok) {
-      document.getElementById('gate-err-code').textContent = data.error || 'Código incorrecto.';
-      document.getElementById('gate-err-code').classList.add('show');
-      btn.disabled = false;
-      btn.textContent = 'Confirmar código ✓';
-      return;
-    }
-    // Código correcto → paso 3
-    document.getElementById('gate-step-2').style.display = 'none';
-    document.getElementById('gate-step-3').style.display = 'block';
-  } catch(e) {
-    document.getElementById('gate-err-code').textContent = 'Error de conexión. Intentá de nuevo.';
-    document.getElementById('gate-err-code').classList.add('show');
-    btn.disabled = false;
-    btn.textContent = 'Confirmar código ✓';
-  }
-}
-
-// ── GATE: reenviar código ─────────────────────────────────────
-async function gateResend(e) {
-  e.preventDefault();
-  const phone = document.getElementById('gate-phone').value.trim();
-  try {
-    await fetch('https://romebot.cristian-romero-digital.workers.dev/verify/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    });
-    document.getElementById('gate-err-code').textContent = '✅ Código reenviado.';
-    document.getElementById('gate-err-code').style.color = 'var(--accent)';
-    document.getElementById('gate-err-code').classList.add('show');
-    setTimeout(() => {
-      document.getElementById('gate-err-code').classList.remove('show');
-      document.getElementById('gate-err-code').style.color = '';
-    }, 3000);
-  } catch(e) {}
-}
-
-// ── GATE: volver al paso 1 ────────────────────────────────────
-function gateBack(e) {
-  e.preventDefault();
-  document.getElementById('gate-step-2').style.display = 'none';
-  document.getElementById('gate-step-1').style.display = 'block';
-  document.getElementById('gate-btn-verify').disabled = false;
-  document.getElementById('gate-btn-verify').textContent = 'Verificar por WhatsApp 📲';
-  document.getElementById('gate-code').value = '';
-}
-
-// ── GATE PASO 3: submit final ─────────────────────────────────
 async function submitGate() {
   const name  = document.getElementById('gate-name').value.trim();
   const phone = document.getElementById('gate-phone').value.trim();
