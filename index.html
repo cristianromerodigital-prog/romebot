@@ -302,9 +302,9 @@
         <div class="gate-error" id="gate-err-name">Por favor ingresá tu nombre.</div>
       </div>
       <div class="gate-field">
-        <label id="gate-label-phone">WhatsApp (con código de país)</label>
-        <input type="text" id="gate-phone" inputmode="tel" placeholder="+54 9 11 1234-5678" autocomplete="off">
-        <div class="gate-error" id="gate-err-phone">Ingresá un número válido con código de país (ej: +54911...).</div>
+        <label id="gate-label-phone">WhatsApp</label>
+        <input type="text" id="gate-phone" inputmode="tel" placeholder="11 1234-5678 o +54 9 11..." autocomplete="off">
+        <div class="gate-error" id="gate-err-phone">Ingresá un número de teléfono válido.</div>
       </div>
       <button class="gate-submit" id="gate-btn-verify" onclick="gateStep1()">
         Verificar por WhatsApp 📲
@@ -370,7 +370,7 @@
     <div class="header-info">
       <h1>FestiBot</h1>
       <div class="slogan" id="header-slogan">Asesor IA de Eventos</div>
-      <div class="version-badge"><span>Beta V1.29</span></div>
+      <div class="version-badge"><span>Beta V1.30</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1588,10 +1588,6 @@ async function gateStep1() {
   btn.disabled = true;
   btn.textContent = 'Enviando código...';
   try {
-    // Auto-completar codigo de pais Argentina
-    var phoneClean = phone.replace(/[\s\-\(\)]/g,'');
-    if (/^11\d{8}$/.test(phoneClean)) { phone = '+54911' + phoneClean.slice(2); document.getElementById('gate-phone').value = phone; }
-    else if (/^9\d{10}$/.test(phoneClean)) { phone = '+54' + phoneClean; document.getElementById('gate-phone').value = phone; }
     const res = await fetch('https://romebot.cristian-romero-digital.workers.dev/verify/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1605,6 +1601,11 @@ async function gateStep1() {
       btn.disabled = false;
       btn.textContent = 'Verificar por WhatsApp 📲';
       return;
+    }
+    // Usar el numero normalizado que devuelve el worker
+    if (data.phone) {
+      phone = data.phone;
+      document.getElementById('gate-phone').value = phone;
     }
     document.getElementById('gate-step-1').style.display = 'none';
     document.getElementById('gate-step-2').style.display = 'block';
