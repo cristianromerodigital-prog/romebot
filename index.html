@@ -336,7 +336,7 @@
     <div class="header-info">
       <h1>By Cristian Romero Digital</h1>
       <div class="slogan" id="header-slogan">Tu fotógrafo amigo</div>
-      <div class="version-badge"><span>Beta V1.23</span></div>
+      <div class="version-badge"><span>Beta V1.24</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/cristian.romero.digital/" target="_blank" rel="noopener">
@@ -1082,16 +1082,20 @@ async function submitContact() {
 // ── LEADS PANEL ──────────────────────────────────────────
 // Obtener la fecha más relevante del lead: primero del chat log, luego campos, luego gate
 function getLeadFecha(l) {
-  // 1. Buscar última fecha mencionada en el chat log
+  // 1. Buscar última fecha mencionada en el chat log (flexible, acepta typos)
   if (l.chat_log && l.chat_log.length > 0) {
-    const meses = 'enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre';
-    const reTexto = new RegExp('(\\d{1,2}\\s+de\\s+(?:' + meses + ')(?:\\s+(?:de\\s+)?\\d{4})?)', 'i');
-    const reNum = /\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/;
-    const reMesAno = new RegExp('(?:' + meses + ')\\s+(?:del?\\s+)?\\d{4}', 'i');
+    // Patron 1: "25 de diciembre" o "25 de dicmebre" (typos) — numero + "de" + palabra
+    const reFlexible = /(\d{1,2}\s+de\s+[a-záéíóúüñ]{3,}(?:\s+(?:de\s+)?\d{4})?)/i;
+    // Patron 2: numero/numero/año
+    const reNum = /\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/;
+    // Patron 3: "mes de año" o "mes año"
+    const reMesAno = /(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(?:de\s+|del\s+)?\d{4}/i;
     // Recorrer de más nuevo a más viejo
     for (let i = l.chat_log.length - 1; i >= 0; i--) {
       const entry = l.chat_log[i];
-      const m = entry.match(reTexto) || entry.match(reMesAno) || entry.match(reNum);
+      // Sacar el timestamp del inicio del log "[fecha hora]" para no confundirlo con la fecha del evento
+      const sinTimestamp = entry.replace(/^\[[\d\/\s:\.amp\-]+\]\s*/i, '');
+      const m = sinTimestamp.match(reFlexible) || sinTimestamp.match(reMesAno) || sinTimestamp.match(reNum);
       if (m) return m[0];
     }
   }
