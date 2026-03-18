@@ -386,78 +386,21 @@
       </p>
     </div>
 
-    <!-- PASO PRIVACIDAD: Política de privacidad -->
+    <!-- PASO PRIVACIDAD -->
     <div id="gate-step-privacy" style="display:none;">
-      <div style="text-align:center;margin-bottom:14px;">
-        <div style="font-size:1.5rem;margin-bottom:4px;">🔒</div>
-        <p style="font-size:0.82rem;color:var(--text-muted);" id="gate-privacy-msg">Antes de continuar, leé y aceptá nuestra política de privacidad.</p>
+      <div style="text-align:center;margin-bottom:22px;">
+        <div style="font-size:1.8rem;margin-bottom:8px;">🔒</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;" id="gate-privacy-msg">Para continuar, revisá y aceptá nuestra política de privacidad.</p>
       </div>
-      <div class="privacy-scroll" id="privacy-scroll-box">
-        <h3>Política de Privacidad — Festibot</h3>
-        <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:10px;"><strong>Última actualización:</strong> 18 de marzo de 2026</p>
-        <p>En Festibot, nos comprometemos a proteger la información personal que compartís con nosotros. Esta política explica cómo recopilamos y utilizamos tus datos cuando interactuás con nuestros sistemas automatizados, cumpliendo con la <strong>Ley N° 25.326</strong> de Protección de Datos Personales de Argentina.</p>
-        <hr>
-        <h4>1. No venta ni cesión a terceros</h4>
-        <p>Festibot no vende, no alquila, ni comercializa tus datos personales con terceros para fines publicitarios ajenos. Tu información se utiliza exclusivamente para gestionar tus consultas y brindarte los servicios solicitados dentro de nuestra plataforma. Los datos solo pueden ser procesados por soportes tecnológicos necesarios (servidores, bases de datos o IA) que actúan únicamente como infraestructura técnica.</p>
-        <hr>
-        <h4>2. Información que recopilamos</h4>
-        <p>Podemos recopilar la siguiente información necesaria para el funcionamiento del servicio:</p>
-        <ul>
-          <li>Nombre y apellido.</li>
-          <li>Número de teléfono y/o correo electrónico.</li>
-          <li>Detalles de la consulta (tipo de evento, fecha sugerida, ubicación).</li>
-          <li>Mensajes e interacciones a través de nuestros canales de comunicación.</li>
-          <li>Datos técnicos básicos (dirección IP, tipo de dispositivo y navegador).</li>
-        </ul>
-        <hr>
-        <h4>3. Uso de la información</h4>
-        <p>La información recopilada por Festibot se utiliza para:</p>
-        <ul>
-          <li>Responder consultas de manera inmediata.</li>
-          <li>Proporcionar presupuestos y detalles sobre servicios de fotografía.</li>
-          <li>Automatizar la atención mediante sistemas tecnológicos avanzados.</li>
-          <li>Mejorar la experiencia de usuario y la eficiencia de nuestras respuestas.</li>
-        </ul>
-        <hr>
-        <h4>4. Uso de tecnología automatizada</h4>
-        <p>Festibot utiliza sistemas de inteligencia artificial y automatización para generar respuestas y asistir a los usuarios de forma dinámica. El fin de esta tecnología es exclusivamente optimizar la atención y brindar soporte rápido.</p>
-        <hr>
-        <h4>5. Compartición técnica de datos</h4>
-        <p>Para que el servicio sea operativo, los datos pueden alojarse o transitar por plataformas de terceros (como servicios de hosting o APIs de mensajería). Estos proveedores externos actúan como "encargados de tratamiento" y tienen prohibido utilizar tu información para fines propios.</p>
-        <hr>
-        <h4>6. Transferencia de datos al prestador</h4>
-        <p>Al utilizar Festibot, aceptás que la información proporcionada sea procesada por <strong>Cristian Romero Digital (CRD)</strong> con el fin de concretar la prestación de los servicios de fotografía profesional solicitados o responder dudas técnicas vinculadas.</p>
-        <hr>
-        <h4>7. Generación de oportunidades comerciales propias</h4>
-        <p>Los datos ingresados podrán ser utilizados por CRD para enviarte propuestas personalizadas, promociones exclusivas o informarte sobre fechas disponibles, siempre en relación directa con servicios de fotografía.</p>
-        <hr>
-        <h4>8. Consentimiento informado</h4>
-        <p>Al interactuar con Festibot y proporcionar tus datos, prestás tu consentimiento libre y expreso para:</p>
-        <ul>
-          <li>El tratamiento de tu información según los fines descriptos.</li>
-          <li>Ser contactado por los medios facilitados para el seguimiento de tu consulta.</li>
-          <li>El uso de herramientas de automatización en la gestión de tus mensajes.</li>
-        </ul>
-        <hr>
-        <h4>9. Seguridad de la información</h4>
-        <p>Implementamos medidas de seguridad razonables y adecuadas para proteger tus datos contra accesos no autorizados, pérdidas, alteraciones o cualquier forma de divulgación indebida.</p>
-        <hr>
-        <h4>10. Conservación de datos</h4>
-        <p>Tus datos personales se almacenarán únicamente durante el tiempo necesario para cumplir con la finalidad de la consulta o la relación comercial establecida, o hasta que solicites su baja definitiva.</p>
-        <hr>
-        <h4>11. Derechos del Usuario (ARCO)</h4>
-        <p>Como titular de los datos, tenés derecho a acceder a tu información de forma gratuita en intervalos no inferiores a seis meses. También podés solicitar su corrección o eliminación definitiva escribiendo a: <strong>soyfestibot@gmail.com</strong>.</p>
-        <hr>
-        <h4>12. Cambios en esta política</h4>
-        <p>Nos reservamos el derecho de modificar esta política en cualquier momento para adaptarla a cambios legales o técnicos. Cualquier actualización será publicada en esta misma sección.</p>
-      </div>
-      <div class="privacy-accept-row">
+      <div class="privacy-accept-row" style="margin-bottom:6px;">
         <input type="checkbox" id="gate-privacy-check" onchange="gatePrivacyCheckChange()">
-        <label for="gate-privacy-check">He leído y acepto la <a href="#" onclick="return false;">Política de Privacidad</a>. Entiendo que mis datos serán utilizados para procesar mi solicitud y recibir comunicaciones del servicio.</label>
+        <label for="gate-privacy-check" style="font-size:0.82rem;color:var(--text);line-height:1.6;">
+          He leído y acepto la <a href="#" onclick="openPrivacyModal(event)" style="color:var(--accent);text-decoration:underline;font-weight:500;">Política de Privacidad</a>. Entiendo que mis datos serán utilizados para procesar mi solicitud y recibir comunicaciones del servicio.
+        </label>
       </div>
       <div class="gate-error-privacy" id="gate-err-privacy">Debés aceptar la política de privacidad para continuar.</div>
-      <button class="gate-submit" id="gate-btn-privacy" onclick="gateStepPrivacy()">
-        Acepto y continúo →
+      <button class="gate-submit" id="gate-btn-privacy" onclick="gateStepPrivacy()" style="margin-top:14px;">
+        Continuar →
       </button>
     </div>
 
@@ -499,7 +442,7 @@
     <div class="header-info">
       <h1>FestiBot</h1>
       <div class="slogan" id="header-slogan">Asesor IA de Eventos</div>
-      <div class="version-badge"><span>Beta V2.05</span></div>
+      <div class="version-badge"><span>Beta V2.06</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/festi.bot/" target="_blank" rel="noopener">
@@ -1881,7 +1824,6 @@ async function gateStep1() {
   if (GATE_MODE === 0) {
     document.getElementById('gate-step-1').style.display = 'none';
     document.getElementById('gate-step-privacy').style.display = 'block';
-    document.getElementById('privacy-scroll-box').scrollTop = 0;
     return;
   }
 
@@ -1945,7 +1887,6 @@ async function gateStep2() {
     }
     document.getElementById('gate-step-2').style.display = 'none';
     document.getElementById('gate-step-privacy').style.display = 'block';
-    document.getElementById('privacy-scroll-box').scrollTop = 0;
   } catch(e) {
     document.getElementById('gate-err-code').textContent = 'Error de conexión. Intentá de nuevo.';
     document.getElementById('gate-err-code').classList.add('show');
@@ -1955,10 +1896,27 @@ async function gateStep2() {
 }
 
 // ── GATE: política de privacidad ─────────────────────────────
+function openPrivacyModal(e) {
+  e.preventDefault();
+  const modal = document.getElementById('privacy-modal');
+  modal.style.display = 'flex';
+  // scroll al top del contenido
+  modal.querySelector('div > div:nth-child(2)').scrollTop = 0;
+}
+
+function closePrivacyModal() {
+  document.getElementById('privacy-modal').style.display = 'none';
+}
+
+function acceptFromModal() {
+  document.getElementById('gate-privacy-check').checked = true;
+  document.getElementById('gate-err-privacy').classList.remove('show');
+  closePrivacyModal();
+}
+
 function gatePrivacyCheckChange() {
   const checked = document.getElementById('gate-privacy-check').checked;
-  const err = document.getElementById('gate-err-privacy');
-  if (checked) err.classList.remove('show');
+  if (checked) document.getElementById('gate-err-privacy').classList.remove('show');
 }
 
 function gateStepPrivacy() {
@@ -1970,6 +1928,12 @@ function gateStepPrivacy() {
   document.getElementById('gate-step-privacy').style.display = 'none';
   document.getElementById('gate-step-3').style.display = 'block';
 }
+
+// cerrar modal con clic fuera
+document.addEventListener('DOMContentLoaded', function() {
+  const m = document.getElementById('privacy-modal');
+  if (m) m.addEventListener('click', function(e) { if (e.target === this) closePrivacyModal(); });
+});
 
 // ── GATE: reenviar código ─────────────────────────────────────
 async function gateResend(e) {
@@ -2068,7 +2032,7 @@ async function submitGate() {
   btn.textContent = currentLang === 'es' ? 'Guardando...' : 'Saving...';
 
   // Save lead to Cloudflare KV
-  const lead = { name, phone, event, date, lang: currentLang, ts: new Date().toISOString(), source: 'gate' };
+  const lead = { name, phone, event, date, lang: currentLang, ts: new Date().toISOString(), source: 'gate', privacy_accepted: true, privacy_ts: new Date().toISOString() };
   await saveLeadToStorage(lead);
 
   // Save to localStorage so gate doesn't show again
@@ -2219,6 +2183,74 @@ calcBudget();
 genTimeline();
 initGate();
 </script>
+<!-- MODAL POLÍTICA DE PRIVACIDAD -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(10,15,30,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:480px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(10,15,30,0.25);animation:fadeUp 0.3s ease;">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <span style="font-size:1.1rem;">🔒</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--text);">Política de Privacidad</span>
+      </div>
+      <button onclick="closePrivacyModal()" style="background:none;border:none;font-size:1.2rem;color:var(--text-muted);cursor:pointer;padding:2px 6px;border-radius:6px;line-height:1;" title="Cerrar">✕</button>
+    </div>
+    <!-- Scroll content -->
+    <div style="overflow-y:auto;padding:18px 20px;flex:1;font-size:0.78rem;line-height:1.75;color:var(--text);scrollbar-width:thin;scrollbar-color:var(--border) transparent;">
+      <p style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:12px;"><strong>Última actualización:</strong> 18 de marzo de 2026</p>
+      <p style="margin-bottom:10px;">En Festibot, nos comprometemos a proteger la información personal que compartís con nosotros. Esta política explica cómo recopilamos y utilizamos tus datos cuando interactuás con nuestros sistemas automatizados, cumpliendo con la <strong>Ley N° 25.326</strong> de Protección de Datos Personales de Argentina.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">1. No venta ni cesión a terceros</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Festibot no vende, no alquila, ni comercializa tus datos personales con terceros para fines publicitarios ajenos. Tu información se utiliza exclusivamente para gestionar tus consultas y brindarte los servicios solicitados dentro de nuestra plataforma. Los datos solo pueden ser procesados por soportes tecnológicos necesarios (servidores, bases de datos o IA) que actúan únicamente como infraestructura técnica.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">2. Información que recopilamos</p>
+      <p style="color:var(--text-muted);margin-bottom:5px;">Podemos recopilar la siguiente información necesaria para el funcionamiento del servicio:</p>
+      <ul style="padding-left:16px;color:var(--text-muted);margin-bottom:10px;">
+        <li>Nombre y apellido.</li><li>Número de teléfono y/o correo electrónico.</li><li>Detalles de la consulta (tipo de evento, fecha sugerida, ubicación).</li><li>Mensajes e interacciones a través de nuestros canales de comunicación.</li><li>Datos técnicos básicos (dirección IP, tipo de dispositivo y navegador).</li>
+      </ul>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">3. Uso de la información</p>
+      <ul style="padding-left:16px;color:var(--text-muted);margin-bottom:10px;">
+        <li>Responder consultas de manera inmediata.</li><li>Proporcionar presupuestos y detalles sobre servicios de fotografía.</li><li>Automatizar la atención mediante sistemas tecnológicos avanzados.</li><li>Mejorar la experiencia de usuario y la eficiencia de nuestras respuestas.</li>
+      </ul>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">4. Uso de tecnología automatizada</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Festibot utiliza sistemas de inteligencia artificial y automatización para generar respuestas y asistir a los usuarios de forma dinámica. El fin de esta tecnología es exclusivamente optimizar la atención y brindar soporte rápido.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">5. Compartición técnica de datos</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Para que el servicio sea operativo, los datos pueden alojarse o transitar por plataformas de terceros (como servicios de hosting o APIs de mensajería). Estos proveedores externos actúan como "encargados de tratamiento" y tienen prohibido utilizar tu información para fines propios.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">6. Transferencia de datos al prestador</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Al utilizar Festibot, aceptás que la información proporcionada sea procesada por <strong>Cristian Romero Digital (CRD)</strong> con el fin de concretar la prestación de los servicios de fotografía profesional solicitados o responder dudas técnicas vinculadas.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">7. Generación de oportunidades comerciales propias</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Los datos ingresados podrán ser utilizados por CRD para enviarte propuestas personalizadas, promociones exclusivas o informarte sobre fechas disponibles, siempre en relación directa con servicios de fotografía.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">8. Consentimiento informado</p>
+      <p style="color:var(--text-muted);margin-bottom:5px;">Al interactuar con Festibot y proporcionar tus datos, prestás tu consentimiento libre y expreso para:</p>
+      <ul style="padding-left:16px;color:var(--text-muted);margin-bottom:10px;">
+        <li>El tratamiento de tu información según los fines descriptos.</li><li>Ser contactado por los medios facilitados para el seguimiento de tu consulta.</li><li>El uso de herramientas de automatización en la gestión de tus mensajes.</li>
+      </ul>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">9. Seguridad de la información</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Implementamos medidas de seguridad razonables y adecuadas para proteger tus datos contra accesos no autorizados, pérdidas, alteraciones o cualquier forma de divulgación indebida.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">10. Conservación de datos</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Tus datos personales se almacenarán únicamente durante el tiempo necesario para cumplir con la finalidad de la consulta o la relación comercial establecida, o hasta que solicites su baja definitiva.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">11. Derechos del Usuario (ARCO)</p>
+      <p style="color:var(--text-muted);margin-bottom:10px;">Como titular de los datos, tenés derecho a acceder a tu información de forma gratuita en intervalos no inferiores a seis meses. También podés solicitar su corrección o eliminación definitiva escribiendo a: <strong style="color:var(--text);">soyfestibot@gmail.com</strong>.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">12. Cambios en esta política</p>
+      <p style="color:var(--text-muted);margin-bottom:4px;">Nos reservamos el derecho de modificar esta política en cualquier momento para adaptarla a cambios legales o técnicos. Cualquier actualización será publicada en esta misma sección.</p>
+    </div>
+    <!-- Footer con botón aceptar -->
+    <div style="padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px;">
+      <button onclick="closePrivacyModal()" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:0.85rem;cursor:pointer;">Cerrar</button>
+      <button onclick="acceptFromModal()" style="flex:2;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;box-shadow:0 3px 10px rgba(201,162,39,0.30);">✓ Acepto la política</button>
+    </div>
+  </div>
+</div>
+
   <div class="ai-disclaimer">
     <span>🤖 FestiBot es un asistente de IA y puede cometer errores. Por favor verificá las respuestas antes de contratar proveedores.</span>
   </div>
