@@ -442,7 +442,7 @@
     <div class="header-info">
       <h1>FestiBot</h1>
       <div class="slogan" id="header-slogan">Asesor IA de Eventos</div>
-      <div class="version-badge"><span>Beta V2.06</span></div>
+      <div class="version-badge"><span>Beta V2.01</span></div>
     </div>
     <div class="header-right">
       <a class="ig-btn" href="https://www.instagram.com/festi.bot/" target="_blank" rel="noopener">
@@ -1280,6 +1280,9 @@ function _renderLeadsPage() {
     const waMsg = encodeURIComponent('¡Hola ' + (l.name||'') + '! Soy FestiBot, tu Asesor IA de Eventos 🎉');
     const waBtn = phone ? `<a class="lead-wa" href="https://wa.me/${phone}?text=${waMsg}" target="_blank">💬 WhatsApp</a>` : '';
     const source = l.source === 'gate' ? '🚪 Entrada' : l.source === 'chat' ? '💬 Chat' : '';
+    const privacyBadge = l.privacy_accepted
+      ? `<span title="Política aceptada el ${l.privacy_ts ? new Date(l.privacy_ts).toLocaleString(currentLang==='es'?'es-AR':'en-US') : 'fecha desconocida'}" style="display:inline-flex;align-items:center;gap:3px;background:#d1fae5;color:#065f46;font-size:0.62rem;font-weight:600;padding:2px 7px;border-radius:10px;border:1px solid #6ee7b7;letter-spacing:0.04em;">✅ Política aceptada</span>`
+      : `<span style="display:inline-flex;align-items:center;gap:3px;background:#fee2e2;color:#991b1b;font-size:0.62rem;font-weight:600;padding:2px 7px;border-radius:10px;border:1px solid #fca5a5;letter-spacing:0.04em;">⚠️ Sin aceptar</span>`;
     const leadId = l.id || '';
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -1287,8 +1290,9 @@ function _renderLeadsPage() {
             ${l.nro ? `<span class="lead-nro">#${l.nro}</span>` : ''}
             ${l.name||'—'}
           </div>
-        <div style="display:flex;gap:6px;align-items:center;">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
           ${source ? `<span class="lead-source">${source}</span>` : ''}
+          ${privacyBadge}
           <button class="lead-delete-btn" onclick="deleteLead('${leadId}')" title="Eliminar lead">🗑</button>
         </div>
       </div>
@@ -1339,11 +1343,12 @@ function _renderLeadsPage() {
 
 function exportCSV() {
   if (!_allLeads.length) return;
-  const headers = ['Nombre','Teléfono','Evento','Fecha evento','Fuente','Registrado'];
+  const headers = ['Nombre','Teléfono','Evento','Fecha evento','Fuente','Política aceptada','Fecha aceptación','Registrado'];
   const rows = _allLeads.map(l => {
     const raw = l.ts || l.timestamp || '';
     const fecha = raw ? new Date(raw).toLocaleString('es-AR') : '';
-    return [l.name||'', l.phone||'', l.event||'', l.date||'', l.source||'', fecha]
+    const privFecha = l.privacy_ts ? new Date(l.privacy_ts).toLocaleString('es-AR') : '';
+    return [l.name||'', l.phone||'', l.event||'', l.date||'', l.source||'', l.privacy_accepted ? 'Sí' : 'No', privFecha, fecha]
       .map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',');
   });
   const csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
