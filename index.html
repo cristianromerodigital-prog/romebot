@@ -453,7 +453,7 @@
         <button class="lang-btn active" onclick="setLang('es')">ES</button>
         <button class="lang-btn" onclick="setLang('en')">EN</button>
       </div>
-      <button class="panel-btn" onclick="showLeads()" id="panelBtnHeader">📋 Leads</button>
+      <button class="panel-btn" onclick="showLeads()" id="panelBtnHeader">⚙️ Admin</button>
       <div class="status-dot"><div class="dot"></div><span>Online</span></div>
     </div>
   </div>
@@ -464,7 +464,7 @@
   <button class="tab" id="tab-checklist" onclick="switchTab('checklist')">✅ Checklist</button>
   <button class="tab" id="tab-budget" onclick="switchTab('budget')">💰 <span id="tab-budget-label">Presupuesto</span></button>
   <button class="tab" id="tab-timeline" onclick="switchTab('timeline')">📅 Timeline</button>
-  <button class="tab" id="tab-leads" onclick="switchTab('leads')">👥 Leads</button>
+  <button class="tab" id="tab-leads" onclick="switchTab('leads')">⚙️ Admin</button>
 </div>
 
 <div class="quick-topics" id="quickTopics"></div>
@@ -567,7 +567,7 @@
   <div class="leads-auth" id="leads-auth-wall">
     <div class="leads-auth-card">
       <div class="leads-auth-icon">🔐</div>
-      <h3 class="leads-auth-title">Panel de Leads</h3>
+      <h3 class="leads-auth-title">Panel Admin</h3>
       <p class="leads-auth-sub">Ingresá la clave de acceso para ver los contactos captados.</p>
       <input type="password" class="leads-auth-input" id="leads-key-input" autocomplete="off" placeholder="••••••••"
         onkeydown="if(event.key==='Enter') verifyLeadsKey()">
@@ -578,7 +578,7 @@
   <!-- Leads content (hidden until auth) -->
   <div class="leads-screen" id="leads-content" style="display:none;">
     <div class="leads-header">
-      <h3 id="leads-title">👥 Leads Captados</h3>
+      <h3 id="leads-title">⚙️ Admin — Leads</h3>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <span class="leads-count" id="leads-count">0 leads</span>
         <button class="csv-btn" onclick="exportCSV()" title="Exportar CSV">⬇️ CSV</button>
@@ -764,7 +764,7 @@ No menciones que sos IA.`,
       categories: ['Salón / Venue','Catering (comida + bebida)','Fotografía y video','Música / DJ / Banda','Decoración y flores','Torta / Postres','Animación / Shows','Impresiones y papelería','Imprevistos (10%)']
     },
     timelineLabels: { title: '📅 Timeline del Evento' },
-    leadsLabels: { title: '👥 Leads Captados', count: (n) => `${n} lead${n!==1?'s':''}`, clear: 'Limpiar', noLeads: 'Aún no hay leads captados.\nCuando un cliente complete el formulario de contacto, aparecerá acá.' },
+    leadsLabels: { title: '⚙️ Admin — Leads', count: (n) => `${n} lead${n!==1?'s':''}`, clear: 'Limpiar', noLeads: 'Aún no hay leads captados.\nCuando un cliente complete el formulario de contacto, aparecerá acá.' },
     greeting: '¡Hola! 🎉 Soy **FestiBot**, tu **Asesor IA de Eventos**.\n\nEstoy acá para ayudarte a planificar cada detalle de tu evento: decoración, catering, música, timing y mucho más.\n\n¿Qué tipo de evento estás organizando?'
   },
   en: {
@@ -832,7 +832,7 @@ Don't mention you're an AI.`,
       categories: ['Venue / Hall','Catering (food + drinks)','Photography & video','Music / DJ / Band','Décor & flowers','Cake / Desserts','Entertainment / Shows','Printing & stationery','Contingency (10%)']
     },
     timelineLabels: { title: '📅 Event Timeline' },
-    leadsLabels: { title: '👥 Captured Leads', count: (n) => `${n} lead${n!==1?'s':''}`, clear: 'Clear', noLeads: 'No leads captured yet.\nWhen a client fills out the contact form, they\'ll appear here.' },
+    leadsLabels: { title: '⚙️ Admin — Leads', count: (n) => `${n} lead${n!==1?'s':''}`, clear: 'Clear', noLeads: 'No leads captured yet.\nWhen a client fills out the contact form, they\'ll appear here.' },
     greeting: '👋 Hi! I\'m **FestiBot**, your **AI Event Planner**.\n\nI\'m here to help you plan every detail of your event: décor, catering, music, timing and more.\n\nWhat kind of event are you planning?'
   }
 };
